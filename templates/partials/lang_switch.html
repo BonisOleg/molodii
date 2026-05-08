@@ -1,0 +1,10 @@
+{% load i18n_fields %}
+<div class="lang" role="group" aria-label="Language switcher">
+  <a class="lang__option {% if LANG == 'uk' %}is-active{% endif %}"
+     href="{% if LANG == 'uk' %}{{ request.path }}{% else %}{{ ALT_LANG_URL }}{% endif %}"
+     hreflang="uk">UA</a>
+  <span class="lang__sep" aria-hidden="true">/</span>
+  <a class="lang__option {% if LANG == 'it' %}is-active{% endif %}"
+     href="{% if LANG == 'it' %}{{ request.path }}{% else %}{{ ALT_LANG_URL }}{% endif %}"
+     hreflang="it">IT</a>
+</div>

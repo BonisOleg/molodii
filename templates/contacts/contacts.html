@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load i18n_fields %}
+
+{% block title %}{% t page "title" %} · {% if site_settings %}{% t site_settings "brand_name" %}{% endif %}{% endblock %}
+
+{% block content %}
+<article class="page-article">
+  <div class="container">
+    <header class="page-article__header" data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}</p>
+      <h1 class="page-article__title">{% t page "title" %}</h1>
+      <p class="page-article__lead">{% t page "intro" %}</p>
+    </header>
+
+    <div class="contacts-grid">
+      <div class="contacts-grid__details" data-reveal>
+        {% if site_settings.email %}
+          <a class="contact-line" href="mailto:{{ site_settings.email }}">
+            <span class="contact-line__label">Email</span>
+            <span class="contact-line__value">{{ site_settings.email }}</span>
+          </a>
+        {% endif %}
+        {% if site_settings.phone %}
+          <a class="contact-line" href="tel:{{ site_settings.phone }}">
+            <span class="contact-line__label">{% if LANG == "it" %}Telefono{% else %}Телефон{% endif %}</span>
+            <span class="contact-line__value">{{ site_settings.phone }}</span>
+          </a>
+        {% endif %}
+
+        {% t page "working_hours" as hours %}
+        {% if hours %}
+          <div class="contact-line">
+            <span class="contact-line__label">{% if LANG == "it" %}Orari{% else %}Графік{% endif %}</span>
+            <span class="contact-line__value">{{ hours|linebreaksbr }}</span>
+          </div>
+        {% endif %}
+
+        {% if socials %}
+          <ul class="socials socials--icons" aria-label="Social links">
+            {% for s in socials %}
+              <li class="socials__item">
+                <a class="socials__link" href="{{ s.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ s.get_platform_display }}">
+                  {% include "partials/social_icon.html" with platform=s.platform %}
+                  <span class="visually-hidden">{{ s.get_platform_display }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <form class="form" method="post" novalidate data-reveal>
+        {% csrf_token %}
+        {% if submitted %}
+          <div class="form__notice form__notice--success" role="status">
+            {% if LANG == "it" %}Grazie! Ti risponderò al più presto.{% else %}Дякую! Я відповім вам найближчим часом.{% endif %}
+          </div>
+        {% endif %}
+
+        <label class="form__field">
+          <span class="form__label">{% if LANG == "it" %}Nome{% else %}Ім'я{% endif %}</span>
+          {{ form.name }}
+          {% if form.name.errors %}<span class="form__error">{{ form.name.errors.0 }}</span>{% endif %}
+        </label>
+
+        <label class="form__field">
+          <span class="form__label">Email</span>
+          {{ form.email }}
+          {% if form.email.errors %}<span class="form__error">{{ form.email.errors.0 }}</span>{% endif %}
+        </label>
+
+        <label class="form__field">
+          <span class="form__label">{% if LANG == "it" %}Messaggio{% else %}Повідомлення{% endif %}</span>
+          {{ form.message }}
+          {% if form.message.errors %}<span class="form__error">{{ form.message.errors.0 }}</span>{% endif %}
+        </label>
+
+        <label class="form__field form__field--honeypot" aria-hidden="true">
+          <span class="form__label">Company</span>
+          {{ form.company }}
+        </label>
+
+        <button class="btn btn--primary" type="submit">
+          {% if LANG == "it" %}Invia{% else %}Надіслати{% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  {% if offices %}
+    <section class="container offices">
+      <div data-reveal>
+        <p class="eyebrow">{% if LANG == "it" %}Indirizzi{% else %}Адреси{% endif %}</p>
+        <h2 class="section__title">{% if LANG == "it" %}I miei studi{% else %}Кабінети{% endif %}</h2>
+      </div>
+      <ul class="offices__list">
+        {% for o in offices %}
+          <li class="office-card" data-reveal data-reveal-group>
+            <div class="office-card__media">
+              {% if o.photo %}
+                <img class="office-card__image" src="{{ o.photo.url }}" alt="" loading="lazy" decoding="async">
+              {% endif %}
+            </div>
+            <div class="office-card__body">
+              <h3 class="office-card__city">{% t o "city" %}</h3>
+              <p class="office-card__address">{% t o "address" %}</p>
+              {% if o.map_url %}
+                <a class="link link--arrow" href="{{ o.map_url }}" target="_blank" rel="noopener noreferrer">
+                  {% if LANG == "it" %}Apri sulla mappa{% else %}Відкрити на карті{% endif %}
+                </a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</article>
+{% endblock %}

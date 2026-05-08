@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n_fields %}
+
+{% block title %}{% t page "title" %} · {% if site_settings %}{% t site_settings "brand_name" %}{% endif %}{% endblock %}
+
+{% block content %}
+<article class="page-article">
+  <header class="page-article__header container" data-reveal>
+    <p class="eyebrow">{% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}</p>
+    <h1 class="page-article__title">{% t page "title" %}</h1>
+  </header>
+
+  <div class="container">
+    <div class="about-stage">
+      <div class="about-stage__media" data-reveal>
+        {% if page.photo %}
+          <img class="about-stage__image" src="{{ page.photo.url }}" alt="" loading="lazy" decoding="async">
+        {% endif %}
+      </div>
+      <div class="about-stage__copy" data-reveal>
+        <p class="about-stage__lead">{% t page "lead" %}</p>
+        <a class="link link--arrow" href="{% url_for_lang 'contacts' %}">
+          {% if LANG == "it" %}Scrivimi{% else %}Написати мені{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-article__body">
+    {% t page "body" as body %}
+    <div class="prose" data-reveal>{{ body|linebreaks }}</div>
+
+    <div class="info-grid">
+      <section class="info-card" data-reveal data-reveal-group>
+        <h2 class="info-card__title">
+          <small>{% if LANG == "it" %}01 — Background{% else %}01 — Освіта{% endif %}</small>
+          {% if LANG == "it" %}Formazione{% else %}Освіта{% endif %}
+        </h2>
+        {% t page "education" as education_text %}
+        <div class="info-card__body prose">{{ education_text|urlize_new_tab|linebreaksbr }}</div>
+      </section>
+      <section class="info-card" data-reveal data-reveal-group>
+        <h2 class="info-card__title">
+          <small>{% if LANG == "it" %}02 — Metodo{% else %}02 — Метод{% endif %}</small>
+          {% if LANG == "it" %}Approccio{% else %}Підхід{% endif %}
+        </h2>
+        {% t page "approach" as approach_text %}
+        <div class="info-card__body prose">{{ approach_text|urlize_new_tab|linebreaks }}</div>
+      </section>
+    </div>
+  </div>
+</article>
+{% endblock %}

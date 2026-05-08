@@ -1,0 +1,31 @@
+{% load static i18n_fields %}<!doctype html>
+<html lang="{{ LANG }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if site_settings %}{% t site_settings "brand_name" %}{% else %}Психолог – Молодій Тетяна{% endif %}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% if site_settings %}{% t site_settings "tagline" %}{% endif %}{% endblock %}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap">
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sections.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+</head>
+<body class="page page--{{ LANG }}">
+  {% include "partials/header.html" %}
+
+  <main id="main" class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+
+  <script src="{% static 'js/main.js' %}" defer></script>
+</body>
+</html>

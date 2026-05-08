@@ -1,0 +1,65 @@
+"""Contacts page, offices and social links."""
+from __future__ import annotations
+
+from django.db import models
+
+from apps.core.models import SingletonModel
+
+
+class ContactsPage(SingletonModel):
+    title_uk = models.CharField("Заголовок (UA)", max_length=200, default="Контакти")
+    title_it = models.CharField("Заголовок (IT)", max_length=200, default="Contatti")
+    intro_uk = models.TextField("Вступ (UA)", blank=True, default="")
+    intro_it = models.TextField("Вступ (IT)", blank=True, default="")
+    working_hours_uk = models.TextField("Графік (UA)", blank=True, default="")
+    working_hours_it = models.TextField("Графік (IT)", blank=True, default="")
+
+    class Meta:
+        verbose_name = "Сторінка «Контакти»"
+        verbose_name_plural = "Сторінка «Контакти»"
+
+    def __str__(self) -> str:
+        return self.title_uk
+
+
+class Office(models.Model):
+    city_uk = models.CharField("Місто (UA)", max_length=120)
+    city_it = models.CharField("Місто (IT)", max_length=120, blank=True, default="")
+    address_uk = models.CharField("Адреса (UA)", max_length=255)
+    address_it = models.CharField("Адреса (IT)", max_length=255, blank=True, default="")
+    map_url = models.URLField("Посилання на карту", blank=True, default="")
+    photo = models.ImageField("Фото кабінету", upload_to="offices/", blank=True, null=True)
+    order = models.PositiveSmallIntegerField("Порядок", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Кабінет"
+        verbose_name_plural = "Кабінети"
+
+    def __str__(self) -> str:
+        return f"{self.city_uk} — {self.address_uk}"
+
+
+class SocialLink(models.Model):
+    class Platform(models.TextChoices):
+        INSTAGRAM = "instagram", "Instagram"
+        LINKEDIN = "linkedin", "LinkedIn"
+        FACEBOOK = "facebook", "Facebook"
+        TELEGRAM = "telegram", "Telegram"
+        WHATSAPP = "whatsapp", "WhatsApp"
+        EMAIL = "email", "Email"
+
+    platform = models.CharField("Платформа", max_length=20, choices=Platform.choices)
+    url = models.URLField("Посилання")
+    order = models.PositiveSmallIntegerField("Порядок", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Соц. посилання"
+        verbose_name_plural = "Соц. посилання"
+        constraints = [
+            models.UniqueConstraint(fields=["platform"], name="unique_social_platform"),
+        ]
+
+    def __str__(self) -> str:
+        return self.get_platform_display()

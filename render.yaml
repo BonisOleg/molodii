@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: psycholog-site
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn project.wsgi:application
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.5"
+      - key: DJANGO_SETTINGS_MODULE
+        value: project.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: CONTACT_RECIPIENT
+        sync: false
+      - key: SECURE_SSL_REDIRECT
+        value: "True"

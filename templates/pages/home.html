@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load i18n_fields %}
+
+{% block title %}{% t page "hero_title" %} · {% if site_settings %}{% t site_settings "brand_name" %}{% endif %}{% endblock %}
+
+{% block content %}
+
+{# ── HERO ───────────────────────────────────────────────── #}
+<section id="hero" class="hero">
+  <div class="container hero__inner">
+    <div class="hero__copy" data-reveal>
+      <p class="eyebrow">{% if site_settings %}{% t site_settings "tagline" %}{% endif %}</p>
+      <h1 class="hero__title">{% t page "hero_title" %}</h1>
+      <p class="hero__lead">{% t page "hero_subtitle" %}</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#contacts">{% t page "hero_cta" %}</a>
+        <a class="link link--arrow" href="#about">
+          {% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}
+        </a>
+      </div>
+      <div class="hero__meta">
+        <span class="hero__meta-item">{% if LANG == "it" %}Online e di persona (Milano, Como){% else %}Онлайн та вживу (Мілан, Комо){% endif %}</span>
+        <span class="hero__meta-item">UA · IT</span>
+      </div>
+    </div>
+    <figure class="hero__figure" data-reveal>
+      {% if page.hero_image %}
+        <img class="hero__image" src="{{ page.hero_image.url }}" alt="" loading="eager" decoding="async">
+      {% endif %}
+      <span class="hero__badge">
+        {% if LANG == "it" %}Posti disponibili{% else %}Є вільні слоти{% endif %}
+      </span>
+    </figure>
+  </div>
+</section>
+
+{# ── POSITIONING BAND ───────────────────────────────────── #}
+<section class="band band--quiet">
+  <div class="container band__inner" data-reveal>
+    <svg class="band__ornament" viewBox="0 0 56 16" fill="none" aria-hidden="true">
+      <path d="M1 8 C 10 0, 18 16, 28 8 S 46 0, 55 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+    </svg>
+    <p class="band__text">{% t page "positioning" %}</p>
+  </div>
+</section>
+
+{# ── ABOUT ──────────────────────────────────────────────── #}
+<section id="about" class="section section--split">
+  <div class="container section__inner">
+    <div class="section__media" data-reveal>
+      <span class="section__media-tag">{% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}</span>
+      {% if page.about_image %}
+        <img class="section__image" src="{{ page.about_image.url }}" alt="" loading="lazy" decoding="async">
+      {% endif %}
+    </div>
+    <div class="section__copy" data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Conosciamoci{% else %}Знайомство{% endif %}</p>
+      <h2 class="section__title">{% t about "title" %}</h2>
+      <p class="about-stage__lead">{% t about "lead" %}</p>
+      <div class="section__actions">
+        <a class="link link--arrow" href="{% url_for_lang 'about' %}">
+          {% if LANG == "it" %}Leggi di più{% else %}Читати далі –{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <section class="info-card" data-reveal data-reveal-group>
+        <h3 class="info-card__title">
+          <small>{% if LANG == "it" %}01 — Background{% else %}01 — Освіта{% endif %}</small>
+          {% if LANG == "it" %}Formazione{% else %}Освіта{% endif %}
+        </h3>
+        {% t about "education" as education_text %}
+        <div class="info-card__body prose">{{ education_text|urlize_new_tab|linebreaksbr }}</div>
+      </section>
+      <section class="info-card" data-reveal data-reveal-group>
+        <h3 class="info-card__title">
+          <small>{% if LANG == "it" %}02 — Metodo{% else %}02 — Метод{% endif %}</small>
+          {% if LANG == "it" %}Approccio{% else %}Підхід{% endif %}
+        </h3>
+        {% t about "approach" as approach_text %}
+        <div class="info-card__body prose">{{ approach_text|urlize_new_tab|linebreaks }}</div>
+      </section>
+    </div>
+  </div>
+</section>
+
+{# ── SERVICES ───────────────────────────────────────────── #}
+<section id="services" class="section section--neutral">
+  <div class="container">
+    <div class="page-article__header" data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Con cosa lavoro{% else %}З чим я працюю{% endif %}</p>
+      <h2 class="page-article__title">{% t services "title" %}</h2>
+      <p class="page-article__lead">{% t services "intro" %}</p>
+    </div>
+
+    <ul class="topics">
+      {% for item in items %}
+        <li class="topics__item" data-reveal data-reveal-group>
+          <span class="topics__num">{{ forloop.counter|stringformat:"02d" }}</span>
+          <h3 class="topics__title">{% t item "title" %}</h3>
+          {% t item "description" as desc %}
+          {% if desc %}<p class="topics__desc">{{ desc }}</p>{% endif %}
+        </li>
+      {% empty %}
+        <li class="topics__item topics__item--empty">
+          {% if LANG == "it" %}Sezione in preparazione.{% else %}Розділ у підготовці.{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% t services "outro" as services_outro %}
+    {% if services_outro %}
+      <div class="section__outro prose" data-reveal>{{ services_outro|linebreaks }}</div>
+    {% endif %}
+
+    <div class="section--cta-narrow" data-reveal>
+      <a class="btn btn--primary" href="#contacts">
+        {% if LANG == "it" %}Prenota una consulenza{% else %}Записатися на консультацію{% endif %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{# ── THERAPY ────────────────────────────────────────────── #}
+<section id="therapy" class="section">
+  <div class="container">
+    <div class="page-article__header" data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}</p>
+      <h2 class="page-article__title">{% t therapy "title" %}</h2>
+      <p class="page-article__lead">{% t therapy "intro" %}</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Il percorso{% else %}Шлях{% endif %}</p>
+      <h3 class="section__title">{% if LANG == "it" %}Come si svolge{% else %}Як ми будемо працювати{% endif %}</h3>
+    </div>
+    <ol class="steps">
+      {% for step in steps %}
+        <li class="steps__item" data-reveal data-reveal-group>
+          <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+          <div class="steps__body">
+            <h4 class="steps__title">{% t step "title" %}</h4>
+            {% t step "body" as sbody %}
+            {% if sbody %}<p class="steps__text">{{ sbody|linebreaks }}</p>{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="container">
+    <div data-reveal>
+      <p class="eyebrow">{% if LANG == "it" %}Pratica{% else %}Практика{% endif %}</p>
+      <h3 class="section__title">{% if LANG == "it" %}Durata e tariffe{% else %}Тривалість і вартість{% endif %}</h3>
+    </div>
+    <div class="pricing-band" data-reveal>
+      <h4 class="pricing-band__title">{% if LANG == "it" %}Sessione singola{% else %}Одна сесія{% endif %}</h4>
+      {% t therapy "pricing_note" as pricing %}
+      <div class="pricing-band__text prose">{{ pricing|linebreaks }}</div>
+    </div>
+  </div>
+
+  <div class="container section--cta-narrow" data-reveal>
+    <a class="btn btn--primary" href="#contacts">
+      {% if LANG == "it" %}Prenota{% else %}Записатися{% endif %}
+    </a>
+  </div>
+</section>
+
+{# ── CONTACTS ───────────────────────────────────────────── #}
+<section id="contacts" class="section section--neutral">
+  <div class="container">
+    <div class="contacts-grid">
+      <div class="contacts-grid__details" data-reveal>
+        <div class="contacts-grid__header">
+          <p class="eyebrow">{% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}</p>
+          <h2 class="page-article__title">{% t contacts_page "title" %}</h2>
+          <p class="page-article__lead">{% t contacts_page "intro" %}</p>
+        </div>
+        {% if site_settings.email %}
+          <a class="contact-line" href="mailto:{{ site_settings.email }}">
+            <span class="contact-line__label">Email</span>
+            <span class="contact-line__value">{{ site_settings.email }}</span>
+          </a>
+        {% endif %}
+        {% if site_settings.phone %}
+          <a class="contact-line" href="tel:{{ site_settings.phone }}">
+            <span class="contact-line__label">{% if LANG == "it" %}Telefono{% else %}Телефон{% endif %}</span>
+            <span class="contact-line__value">{{ site_settings.phone }}</span>
+          </a>
+        {% endif %}
+        {% t contacts_page "working_hours" as hours %}
+        {% if hours %}
+          <div class="contact-line">
+            <span class="contact-line__label">{% if LANG == "it" %}Orari{% else %}Графік{% endif %}</span>
+            <span class="contact-line__value">{{ hours|linebreaksbr }}</span>
+          </div>
+        {% endif %}
+        {% if socials %}
+          <ul class="socials socials--icons" aria-label="Social links">
+            {% for s in socials %}
+              <li class="socials__item">
+                <a class="socials__link" href="{{ s.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ s.get_platform_display }}">
+                  {% include "partials/social_icon.html" with platform=s.platform %}
+                  <span class="visually-hidden">{{ s.get_platform_display }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <form class="form" method="post" novalidate data-reveal>
+        {% csrf_token %}
+        {% if submitted %}
+          <div class="form__notice form__notice--success" role="status">
+            {% if LANG == "it" %}Grazie! Ti risponderò al più presto.{% else %}Дякую! Я відповім вам найближчим часом.{% endif %}
+          </div>
+        {% endif %}
+        <label class="form__field">
+          <span class="form__label">{% if LANG == "it" %}Nome{% else %}Ім'я{% endif %}</span>
+          {{ form.name }}
+          {% if form.name.errors %}<span class="form__error">{{ form.name.errors.0 }}</span>{% endif %}
+        </label>
+        <label class="form__field">
+          <span class="form__label">Email</span>
+          {{ form.email }}
+          {% if form.email.errors %}<span class="form__error">{{ form.email.errors.0 }}</span>{% endif %}
+        </label>
+        <label class="form__field">
+          <span class="form__label">{% if LANG == "it" %}Messaggio{% else %}Повідомлення{% endif %}</span>
+          {{ form.message }}
+          {% if form.message.errors %}<span class="form__error">{{ form.message.errors.0 }}</span>{% endif %}
+        </label>
+        <label class="form__field form__field--honeypot" aria-hidden="true">
+          <span class="form__label">Company</span>
+          {{ form.company }}
+        </label>
+        <button class="btn btn--primary" type="submit">
+          {% if LANG == "it" %}Invia{% else %}Надіслати{% endif %}
+        </button>
+      </form>
+    </div>
+
+    {% if offices %}
+      <div class="offices">
+        <div data-reveal>
+          <p class="eyebrow">{% if LANG == "it" %}Indirizzi{% else %}Адреси{% endif %}</p>
+          <h3 class="section__title">{% if LANG == "it" %}I miei studi{% else %}Кабінети{% endif %}</h3>
+        </div>
+        <ul class="offices__list">
+          {% for o in offices %}
+            <li class="office-card" data-reveal data-reveal-group>
+              <div class="office-card__media">
+                {% if o.photo %}
+                  <img class="office-card__image" src="{{ o.photo.url }}" alt="" loading="lazy" decoding="async">
+                {% endif %}
+              </div>
+              <div class="office-card__body">
+                <h4 class="office-card__city">{% t o "city" %}</h4>
+                <p class="office-card__address">{% t o "address" %}</p>
+                {% if o.map_url %}
+                  <a class="link link--arrow" href="{{ o.map_url }}" target="_blank" rel="noopener noreferrer">
+                    {% if LANG == "it" %}Apri sulla mappa{% else %}Відкрити на карті{% endif %}
+                  </a>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
