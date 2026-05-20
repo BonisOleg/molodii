@@ -7,7 +7,23 @@ from unfold.admin import ModelAdmin
 
 from apps.core.admin import SingletonAdmin
 
-from .models import ConsultationRequest, ContactsPage, Office, SocialLink
+from .models import ConsultationRequest, ContactsPage, Office, OfficePhoto, SocialLink
+
+
+class OfficePhotoInline(admin.TabularInline):
+    model = OfficePhoto
+    extra = 0
+    fields = ("image", "order", "image_preview")
+    readonly_fields = ("image_preview",)
+
+    @admin.display(description="Превʼю")
+    def image_preview(self, obj):
+        if obj and obj.image:
+            return format_html(
+                '<img src="{}" style="max-height:64px;border-radius:4px;" />',
+                obj.image.url,
+            )
+        return "—"
 
 
 @admin.register(ContactsPage)
@@ -35,6 +51,7 @@ class ContactsPageAdmin(SingletonAdmin):
 @admin.register(Office)
 class OfficeAdmin(ModelAdmin):
     compressed_fields = True
+    inlines = (OfficePhotoInline,)
     list_display = ("city_uk", "address_uk", "order", "photo_preview")
     list_display_links = ("city_uk",)
     list_editable = ("order",)
@@ -52,6 +69,7 @@ class OfficeAdmin(ModelAdmin):
             "Фото",
             {
                 "fields": ("photo", "photo_preview"),
+                "description": "Додаткові знімки — у блоці «Фото кабінетів» нижче.",
                 "classes": ["tab"],
             },
         ),

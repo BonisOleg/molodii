@@ -4,8 +4,8 @@ from __future__ import annotations
 from django.shortcuts import redirect, render
 
 from apps.contacts.forms import ContactForm
-from apps.contacts.models import ContactsPage, Office, SocialLink
-from apps.contacts.utils import handle_contact_submission
+from apps.contacts.models import ContactsPage, SocialLink
+from apps.contacts.utils import handle_contact_submission, offices_for_display
 
 from .models import (
     AboutPage,
@@ -40,7 +40,7 @@ def home(request):
         "contacts_page": contacts_page,
         "items": services_page.items.all(),
         "steps": therapy_page.steps.all(),
-        "offices": Office.objects.all(),
+        "offices": offices_for_display(),
         "socials": SocialLink.objects.all(),
         "form": form,
         "submitted": submitted,
@@ -83,7 +83,7 @@ def contacts(request):
 
     return render(request, "contacts/contacts.html", {
         "page": page,
-        "offices": Office.objects.all(),
+        "offices": offices_for_display(),
         "socials": SocialLink.objects.all(),
         "form": form,
         "submitted": submitted,

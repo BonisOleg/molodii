@@ -303,11 +303,7 @@
         <ul class="offices__list">
           {% for o in offices %}
             <li class="office-card" data-reveal data-reveal-group>
-              <div class="office-card__media">
-                {% if o.photo %}
-                  <img class="office-card__image" src="{{ o.photo.url }}" alt="" loading="lazy" decoding="async">
-                {% endif %}
-              </div>
+              {% include "partials/office_card_media.html" %}
               <div class="office-card__body">
                 <h4 class="office-card__city">{% t o "city" %}</h4>
                 <p class="office-card__address">{% t o "address" %}</p>

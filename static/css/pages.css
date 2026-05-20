@@ -634,18 +634,51 @@
 
 .office-card__media {
   position: relative;
-  overflow: hidden;
   background: var(--surface-2);
   aspect-ratio: 16 / 11;
 }
 
+.office-card__media--gallery {
+  aspect-ratio: auto;
+}
+
+.office-card__gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+.office-card__figure {
+  margin: 0;
+  background: var(--surface-2);
+}
+
+.office-card__figure + .office-card__figure {
+  border-top: 1px solid var(--line-soft);
+}
+
 .office-card__image {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 900ms var(--ease-out);
 }
 
-.office-card:hover .office-card__image { transform: scale(1.05); }
+.office-card__image--natural {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: none;
+}
+
+.office-card__media:not(.office-card__media--gallery) .office-card__image--natural {
+  height: 100%;
+  object-fit: contain;
+}
+
+.office-card:hover .office-card__image:not(.office-card__image--natural) {
+  transform: scale(1.05);
+}
 
 .office-card__body {
   padding: 24px;

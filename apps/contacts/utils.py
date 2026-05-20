@@ -1,14 +1,25 @@
-"""Helpers for contact form processing."""
+"""Helpers for contact form processing and office listings."""
 from __future__ import annotations
 
 import logging
 
 from django.conf import settings
 from django.core.mail import EmailMessage
+from django.db.models import Prefetch
 
-from .models import ConsultationRequest
+from .models import ConsultationRequest, Office, OfficePhoto
 
 logger = logging.getLogger(__name__)
+
+
+def offices_for_display():
+    """Offices with photos prefetched in display order."""
+    return Office.objects.prefetch_related(
+        Prefetch(
+            "photos",
+            queryset=OfficePhoto.objects.order_by("order", "id"),
+        ),
+    )
 
 
 def handle_contact_submission(data: dict, request) -> None:

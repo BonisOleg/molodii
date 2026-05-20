@@ -41,6 +41,25 @@ class Office(models.Model):
         return f"{self.city_uk} — {self.address_uk}"
 
 
+class OfficePhoto(models.Model):
+    office = models.ForeignKey(
+        Office,
+        on_delete=models.CASCADE,
+        related_name="photos",
+        verbose_name="Кабінет",
+    )
+    image = models.ImageField("Фото", upload_to="offices/")
+    order = models.PositiveSmallIntegerField("Порядок", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Фото кабінету"
+        verbose_name_plural = "Фото кабінетів"
+
+    def __str__(self) -> str:
+        return f"{self.office.city_uk} — фото #{self.order + 1}"
+
+
 class SocialLink(models.Model):
     class Platform(models.TextChoices):
         INSTAGRAM = "instagram", "Instagram"
