@@ -26,6 +26,33 @@
       </figure>
     </div>
   </div>
+{% elif 'Camelie' in o.address_uk %}
+  <div class="office-card__media office-card__media--gallery">
+    <div class="office-card__gallery">
+      <figure class="office-card__figure">
+        <img
+          class="office-card__image office-card__image--natural"
+          src="{% static 'img/offices/milan/interior-01.jpg' %}"
+          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 1{% else %}фото 1{% endif %}"
+          width="576"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        >
+      </figure>
+      <figure class="office-card__figure">
+        <img
+          class="office-card__image office-card__image--natural"
+          src="{% static 'img/offices/milan/interior-02.jpg' %}"
+          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 2{% else %}фото 2{% endif %}"
+          width="576"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        >
+      </figure>
+    </div>
+  </div>
 {% elif o.photo %}
   <div class="office-card__media">
     <img
