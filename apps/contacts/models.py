@@ -1,7 +1,8 @@
-"""Contacts page, offices and social links."""
+"""Contacts page, offices, social links and consultation requests."""
 from __future__ import annotations
 
 from django.db import models
+from django.utils import timezone
 
 from apps.core.models import SingletonModel
 
@@ -63,3 +64,30 @@ class SocialLink(models.Model):
 
     def __str__(self) -> str:
         return self.get_platform_display()
+
+
+class ConsultationRequest(models.Model):
+    class Status(models.TextChoices):
+        NEW = "new", "Новий"
+        READ = "read", "Прочитано"
+        REPLIED = "replied", "Відповіли"
+
+    name = models.CharField("Ім'я", max_length=120)
+    email = models.EmailField("Email")
+    message = models.TextField("Повідомлення")
+    status = models.CharField(
+        "Статус",
+        max_length=10,
+        choices=Status.choices,
+        default=Status.NEW,
+        db_index=True,
+    )
+    created_at = models.DateTimeField("Дата", default=timezone.now, db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Запит на консультацію"
+        verbose_name_plural = "Запити на консультацію"
+
+    def __str__(self) -> str:
+        return f"{self.name} <{self.email}> — {self.created_at:%d.%m.%Y %H:%M}"

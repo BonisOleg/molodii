@@ -6,37 +6,86 @@
 {% block content %}
 <article class="page-article">
   <header class="page-article__header container" data-reveal>
-    <p class="eyebrow">{% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}</p>
+    <p class="eyebrow">{% t ui_labels "therapy_eyebrow" %}</p>
     <h1 class="page-article__title">{% t page "title" %}</h1>
     <p class="page-article__lead">{% t page "intro" %}</p>
   </header>
 
+  {% t page "format_online" as fmt_online %}
+  {% t page "format_offline" as fmt_offline %}
+  {% if fmt_online or fmt_offline %}
+  <section class="container">
+    <div class="therapy-formats">
+      {% if page.image %}
+      <div class="therapy-formats__media" data-reveal>
+        <img
+          class="therapy-formats__image"
+          src="{{ page.image.url }}"
+          alt="{% t ui_labels 'therapy_eyebrow' %}"
+          width="600"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+      {% endif %}
+      <div class="therapy-formats__copy">
+        {% if fmt_online %}
+        <div class="format-card" data-reveal>
+          <div class="prose">{{ fmt_online|linebreaks }}</div>
+        </div>
+        {% endif %}
+        {% if fmt_offline %}
+        <div class="format-card" data-reveal>
+          <div class="prose">{{ fmt_offline|linebreaks }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
   <section class="container">
     <div data-reveal>
-      <p class="eyebrow">{% if LANG == "it" %}Il percorso{% else %}Шлях{% endif %}</p>
-      <h2 class="section__title">{% if LANG == "it" %}Come si svolge{% else %}Як ми будемо працювати{% endif %}</h2>
+      <p class="eyebrow">{% t ui_labels "therapy_steps_eyebrow" %}</p>
+      <h2 class="section__title">{% t ui_labels "therapy_steps_title" %}</h2>
     </div>
-    <ol class="steps">
-      {% for step in steps %}
-        <li class="steps__item" data-reveal data-reveal-group>
-          <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
-          <div class="steps__body">
-            <h3 class="steps__title">{% t step "title" %}</h3>
-            {% t step "body" as sbody %}
-            {% if sbody %}<p class="steps__text">{{ sbody|linebreaks }}</p>{% endif %}
-          </div>
-        </li>
-      {% endfor %}
-    </ol>
+    <div class="therapy-formats">
+      {% if not fmt_online and not fmt_offline and page.image %}
+      <div class="therapy-formats__media" data-reveal>
+        <img
+          class="therapy-formats__image"
+          src="{{ page.image.url }}"
+          alt="{% t ui_labels 'therapy_eyebrow' %}"
+          width="600"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+      {% endif %}
+      <div class="therapy-formats__copy">
+        <ol class="steps steps--inline">
+          {% for step in steps %}
+            <li class="steps__item" data-reveal data-reveal-group>
+              <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+              <div class="steps__body">
+                <h3 class="steps__title">{% t step "title" %}</h3>
+                {% t step "body" as sbody %}
+                {% if sbody %}<p class="steps__text">{{ sbody|linebreaks }}</p>{% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
   </section>
 
   <section class="container">
     <div data-reveal>
-      <p class="eyebrow">{% if LANG == "it" %}Pratica{% else %}Практика{% endif %}</p>
-      <h2 class="section__title">{% if LANG == "it" %}Durata e tariffe{% else %}Тривалість і вартість{% endif %}</h2>
+      <p class="eyebrow">{% t ui_labels "therapy_pricing_eyebrow" %}</p>
+      <h2 class="section__title">{% t ui_labels "therapy_pricing_title" %}</h2>
     </div>
     <div class="pricing-band" data-reveal>
-      <h3 class="pricing-band__title">{% if LANG == "it" %}Sessione singola{% else %}Одна сесія{% endif %}</h3>
+      <h3 class="pricing-band__title">{% t ui_labels "therapy_pricing_subtitle" %}</h3>
       {% t page "pricing_note" as pricing %}
       <div class="pricing-band__text prose">{{ pricing|linebreaks }}</div>
     </div>
@@ -44,7 +93,7 @@
 
   <div class="container section--cta-narrow" data-reveal>
     <a class="btn btn--primary" href="{% url_for_lang 'contacts' %}">
-      {% if LANG == "it" %}Prenota{% else %}Записатися{% endif %}
+      {% t ui_labels "therapy_cta" %}
     </a>
   </div>
 </article>

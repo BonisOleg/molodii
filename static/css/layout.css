@@ -365,6 +365,27 @@
   color: var(--muted);
   font-size: 0.85rem;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer__dev {
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0.45;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.footer__dev:hover {
+  opacity: 0.75;
+  color: var(--muted);
 }
 
 @media (min-width: 768px) {

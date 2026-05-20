@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# За замовчуванням manage.py runserver уже без autoreloader (див. apps.devserver).
+# Прапорець --noreload лишено явно для сумісності зі старими звичками.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

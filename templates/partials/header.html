@@ -1,5 +1,5 @@
 {% load i18n_fields %}
-<a class="skip-link" href="#main">{% if LANG == "it" %}Vai al contenuto{% else %}Перейти до контенту{% endif %}</a>
+<a class="skip-link" href="#main">{% t ui_labels "nav_skip" %}</a>
 
 <header class="header" data-component="header">
   <div class="header__inner container">
@@ -13,7 +13,7 @@
     <button class="header__toggle" type="button" aria-controls="primary-nav" aria-expanded="false" data-nav-toggle>
       <span class="header__toggle-bar" aria-hidden="true"></span>
       <span class="header__toggle-bar" aria-hidden="true"></span>
-      <span class="visually-hidden">{% if LANG == "it" %}Apri menu{% else %}Відкрити меню{% endif %}</span>
+      <span class="visually-hidden">{% t ui_labels "nav_toggle" %}</span>
     </button>
 
     <nav id="primary-nav" class="nav" aria-label="Primary" data-nav aria-hidden="true">
@@ -23,27 +23,27 @@
 
           <li class="nav__item">
             <a class="nav__link" href="#hero" data-anchor-nav>
-              {% if LANG == "it" %}Home{% else %}Головна{% endif %}
+              {% t ui_labels "nav_home" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link" href="#about" data-anchor-nav>
-              {% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}
+              {% t ui_labels "nav_about" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link" href="#services" data-anchor-nav>
-              {% if LANG == "it" %}Con cosa lavoro{% else %}З чим я працюю{% endif %}
+              {% t ui_labels "nav_services" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link" href="#therapy" data-anchor-nav>
-              {% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}
+              {% t ui_labels "nav_therapy" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link" href="#contacts" data-anchor-nav>
-              {% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}
+              {% t ui_labels "nav_contacts" %}
             </a>
           </li>
 
@@ -51,27 +51,27 @@
 
           <li class="nav__item">
             <a class="nav__link" href="{% url_for_lang 'home' %}">
-              {% if LANG == "it" %}Home{% else %}Головна{% endif %}
+              {% t ui_labels "nav_home" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link {% if 'about' in request.path %}is-active{% endif %}" href="{% url_for_lang 'about' %}">
-              {% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}
+              {% t ui_labels "nav_about" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link {% if 'services' in request.path %}is-active{% endif %}" href="{% url_for_lang 'services' %}">
-              {% if LANG == "it" %}Con cosa lavoro{% else %}З чим я працюю{% endif %}
+              {% t ui_labels "nav_services" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link {% if 'therapy' in request.path %}is-active{% endif %}" href="{% url_for_lang 'therapy' %}">
-              {% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}
+              {% t ui_labels "nav_therapy" %}
             </a>
           </li>
           <li class="nav__item">
             <a class="nav__link {% if 'contacts' in request.path %}is-active{% endif %}" href="{% url_for_lang 'contacts' %}">
-              {% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}
+              {% t ui_labels "nav_contacts" %}
             </a>
           </li>
 

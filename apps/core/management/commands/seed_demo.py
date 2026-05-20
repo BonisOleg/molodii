@@ -225,7 +225,7 @@ class Command(BaseCommand):
             "Lo studio — uno spazio calmo, senza fretta. Indirizzi nella sezione contatti."
         )
         t.pricing_note_uk = t.pricing_note_uk or (
-            "Сесія триває 50 хвилин. Регулярність — раз на тиждень. Вартість і деталі обговорюємо на знайомстві."
+            "Сесія триває 50 хвилин. Регулярність — раз на тиждень. Вартість і деталі обговорюємо при знайомстві."
         )
         t.pricing_note_it = t.pricing_note_it or (
             "La sessione dura 50 minuti. Frequenza — settimanale. Tariffe e dettagli li discutiamo alla conoscenza."

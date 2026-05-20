@@ -20,6 +20,9 @@ env/
 # Static collected
 staticfiles/
 
+# Logs
+logs/
+
 # OS
 .DS_Store
 Thumbs.db

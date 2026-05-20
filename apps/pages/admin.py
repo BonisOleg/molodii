@@ -47,35 +47,12 @@ class HomePageAdmin(SingletonAdmin):
             },
         ),
         (
-            "Тизер «Про мене»",
+            "Фото тизера «Про мене»",
             {
                 "fields": (
-                    "about_teaser_uk",
-                    "about_teaser_it",
                     "about_image",
                     "about_image_preview",
                 ),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Тизер «З чим працюю»",
-            {
-                "fields": ("services_intro_uk", "services_intro_it"),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Тизер «Як проходять зустрічі»",
-            {
-                "fields": ("therapy_intro_uk", "therapy_intro_it"),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Тизер «Контакти»",
-            {
-                "fields": ("contacts_teaser_uk", "contacts_teaser_it"),
                 "classes": ["tab"],
             },
         ),

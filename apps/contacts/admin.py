@@ -1,4 +1,4 @@
-"""Contacts admin: ContactsPage singleton, Offices, SocialLinks with Unfold theme."""
+"""Contacts admin: ContactsPage singleton, Offices, SocialLinks, ConsultationRequests."""
 from __future__ import annotations
 
 from django.contrib import admin
@@ -7,7 +7,7 @@ from unfold.admin import ModelAdmin
 
 from apps.core.admin import SingletonAdmin
 
-from .models import ContactsPage, Office, SocialLink
+from .models import ConsultationRequest, ContactsPage, Office, SocialLink
 
 
 @admin.register(ContactsPage)
@@ -96,3 +96,58 @@ class SocialLinkAdmin(ModelAdmin):
     def platform_icon(self, obj):
         icon = self.PLATFORM_ICONS.get(obj.platform, "🔗")
         return format_html('<span style="font-size:1.3rem;">{}</span>', icon)
+
+
+@admin.register(ConsultationRequest)
+class ConsultationRequestAdmin(ModelAdmin):
+    list_display = ("name", "email", "status_badge", "created_at")
+    list_display_links = ("name",)
+    list_filter = ("status",)
+    search_fields = ("name", "email", "message")
+    readonly_fields = ("name", "email", "message", "created_at")
+    list_per_page = 30
+    date_hierarchy = "created_at"
+
+    fieldsets = (
+        (
+            "Від кого",
+            {
+                "fields": ("name", "email", "created_at"),
+            },
+        ),
+        (
+            "Повідомлення",
+            {
+                "fields": ("message",),
+            },
+        ),
+        (
+            "Статус",
+            {
+                "fields": ("status",),
+            },
+        ),
+    )
+
+    _STATUS_COLORS = {
+        ConsultationRequest.Status.NEW: ("#dc2626", "#fef2f2"),
+        ConsultationRequest.Status.READ: ("#d97706", "#fffbeb"),
+        ConsultationRequest.Status.REPLIED: ("#16a34a", "#f0fdf4"),
+    }
+
+    @admin.display(description="Статус")
+    def status_badge(self, obj):
+        color, bg = self._STATUS_COLORS.get(obj.status, ("#6b7280", "#f9fafb"))
+        return format_html(
+            '<span style="'
+            "display:inline-block;padding:2px 10px;border-radius:12px;"
+            "font-size:.78rem;font-weight:600;"
+            "color:{};background:{};"
+            '">{}</span>',
+            color,
+            bg,
+            obj.get_status_display(),
+        )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).order_by("-created_at")

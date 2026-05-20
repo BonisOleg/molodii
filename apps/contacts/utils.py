@@ -6,15 +6,23 @@ import logging
 from django.conf import settings
 from django.core.mail import EmailMessage
 
+from .models import ConsultationRequest
+
 logger = logging.getLogger(__name__)
 
 
 def handle_contact_submission(data: dict, request) -> None:
-    """Send email notification with the form payload.
+    """Save request to DB and send email notification.
 
-    Failures are logged and silently swallowed so the user always sees a
-    success state — duplicate notifications are mitigated by rate-limit.
+    DB write always happens. Email failure is logged and swallowed so
+    the user always sees a success state.
     """
+    ConsultationRequest.objects.create(
+        name=data["name"],
+        email=data["email"],
+        message=data["message"],
+    )
+
     subject = f"[Сайт] Нове повідомлення від {data['name']}"
     body = (
         f"Ім'я: {data['name']}\n"

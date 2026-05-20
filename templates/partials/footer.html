@@ -5,11 +5,11 @@
       {% for i in "12341234" %}
         <span class="marquee__item">{% if site_settings %}{% t site_settings "brand_name" %}{% else %}{% if LANG == "it" %}Molodii Tetiana{% else %}Молодій Тетяна{% endif %}{% endif %}</span>
         <span class="marquee__dot"></span>
-        <span class="marquee__item">{% if LANG == "it" %}Online &amp; di persona{% else %}Онлайн і офлайн{% endif %}</span>
+        <span class="marquee__item">{% t ui_labels "footer_format" %}</span>
         <span class="marquee__dot"></span>
-        <span class="marquee__item">UA · IT</span>
+        <span class="marquee__item">{{ ui_labels.footer_lang_badge }}</span>
         <span class="marquee__dot"></span>
-        <span class="marquee__item">{% if LANG == "it" %}Conversazione di prova{% else %}Перша розмова{% endif %}</span>
+        <span class="marquee__item">{% t ui_labels "footer_intro" %}</span>
         <span class="marquee__dot"></span>
       {% endfor %}
     </div>
@@ -27,17 +27,17 @@
 
     <nav class="footer__nav" aria-label="Footer">
       {% if request.path == "/" or request.path == "/it/" %}
-        <a class="footer__link" href="#hero">{% if LANG == "it" %}Home{% else %}Головна{% endif %}</a>
-        <a class="footer__link" href="#about">{% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}</a>
-        <a class="footer__link" href="#services">{% if LANG == "it" %}Con cosa lavoro{% else %}З чим я працюю{% endif %}</a>
-        <a class="footer__link" href="#therapy">{% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}</a>
-        <a class="footer__link" href="#contacts">{% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}</a>
+        <a class="footer__link" href="#hero">{% t ui_labels "nav_home" %}</a>
+        <a class="footer__link" href="#about">{% t ui_labels "nav_about" %}</a>
+        <a class="footer__link" href="#services">{% t ui_labels "nav_services" %}</a>
+        <a class="footer__link" href="#therapy">{% t ui_labels "nav_therapy" %}</a>
+        <a class="footer__link" href="#contacts">{% t ui_labels "nav_contacts" %}</a>
       {% else %}
-        <a class="footer__link" href="{% url_for_lang 'home' %}">{% if LANG == "it" %}Home{% else %}Головна{% endif %}</a>
-        <a class="footer__link" href="{% url_for_lang 'about' %}">{% if LANG == "it" %}Su di me{% else %}Про мене{% endif %}</a>
-        <a class="footer__link" href="{% url_for_lang 'services' %}">{% if LANG == "it" %}Con cosa lavoro{% else %}З чим я працюю{% endif %}</a>
-        <a class="footer__link" href="{% url_for_lang 'therapy' %}">{% if LANG == "it" %}Gli incontri{% else %}Як проходять зустрічі{% endif %}</a>
-        <a class="footer__link" href="{% url_for_lang 'contacts' %}">{% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}</a>
+        <a class="footer__link" href="{% url_for_lang 'home' %}">{% t ui_labels "nav_home" %}</a>
+        <a class="footer__link" href="{% url_for_lang 'about' %}">{% t ui_labels "nav_about" %}</a>
+        <a class="footer__link" href="{% url_for_lang 'services' %}">{% t ui_labels "nav_services" %}</a>
+        <a class="footer__link" href="{% url_for_lang 'therapy' %}">{% t ui_labels "nav_therapy" %}</a>
+        <a class="footer__link" href="{% url_for_lang 'contacts' %}">{% t ui_labels "nav_contacts" %}</a>
       {% endif %}
     </nav>
 
@@ -48,5 +48,6 @@
   </div>
   <div class="footer__bottom container">
     <small>&copy; {% now "Y" %} {% if site_settings %}{% t site_settings "brand_name" %}{% endif %}</small>
+    {% if ui_labels.footer_credit_url %}<a class="footer__dev" href="{{ ui_labels.footer_credit_url }}" target="_blank" rel="noopener noreferrer">{% t ui_labels "footer_credit" %}</a>{% endif %}
   </div>
 </footer>

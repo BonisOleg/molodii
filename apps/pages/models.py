@@ -18,18 +18,7 @@ class HomePage(SingletonModel):
     positioning_uk = models.TextField("Позиціонування (UA)", blank=True, default="")
     positioning_it = models.TextField("Позиціонування (IT)", blank=True, default="")
 
-    about_teaser_uk = models.TextField("Тизер «Про мене» (UA)", blank=True, default="")
-    about_teaser_it = models.TextField("Тизер «Про мене» (IT)", blank=True, default="")
     about_image = models.ImageField("Фото для тизера «Про мене»", upload_to="home/", blank=True, null=True)
-
-    services_intro_uk = models.TextField("Тизер «З чим працюю» (UA)", blank=True, default="")
-    services_intro_it = models.TextField("Тизер «З чим працюю» (IT)", blank=True, default="")
-
-    therapy_intro_uk = models.TextField("Тизер «Як проходять зустрічі» (UA)", blank=True, default="")
-    therapy_intro_it = models.TextField("Тизер «Як проходять зустрічі» (IT)", blank=True, default="")
-
-    contacts_teaser_uk = models.TextField("Тизер «Контакти» (UA)", blank=True, default="")
-    contacts_teaser_it = models.TextField("Тизер «Контакти» (IT)", blank=True, default="")
 
     class Meta:
         verbose_name = "Головна сторінка"
@@ -94,7 +83,7 @@ class ServiceItem(models.Model):
 
 
 class TherapyPage(SingletonModel):
-    title_uk = models.CharField("Заголовок (UA)", max_length=200, default="Як проходять зустрічі")
+    title_uk = models.CharField("Заголовок (UA)", max_length=200, default="Як проходить робота")
     title_it = models.CharField("Заголовок (IT)", max_length=200, default="Come procedono gli incontri")
     intro_uk = models.TextField("Вступ (UA)", blank=True, default="")
     intro_it = models.TextField("Вступ (IT)", blank=True, default="")

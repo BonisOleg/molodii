@@ -42,6 +42,35 @@ def urlize_new_tab(value):
     return mark_safe(result)
 
 
+@register.filter(is_safe=True)
+def md_links(value):
+    """Convert [text](url) to safe <a> links with target=_blank.
+
+    Double newlines become paragraph breaks (<p>), single newlines become <br>.
+    """
+    from django.utils.html import escape
+
+    def _process(segment: str) -> str:
+        parts = re.split(r'(\[[^\]]*\]\(https?://[^)]+\))', segment)
+        html: list[str] = []
+        for part in parts:
+            m = re.match(r'\[([^\]]*)\]\((https?://[^)]+)\)', part)
+            if m:
+                html.append(
+                    f'<a href="{m.group(2)}" target="_blank" rel="noopener noreferrer">'
+                    f'{escape(m.group(1))}</a>'
+                )
+            else:
+                html.append(escape(part).replace('\n', '<br>'))
+        return ''.join(html)
+
+    text = str(value)
+    if '\n\n' in text:
+        paras = [p for p in re.split(r'\n{2,}', text) if p.strip()]
+        return mark_safe('\n'.join(f'<p>{_process(p)}</p>' for p in paras))
+    return mark_safe(_process(text))
+
+
 @register.filter
 def field_for_lang(obj, spec):
     """``{{ obj|field_for_lang:"title:uk" }}`` — non-tag access in conditionals."""

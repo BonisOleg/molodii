@@ -16,6 +16,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
+    "apps.devserver",
     "unfold",
     "unfold.contrib.filters",
     "unfold.contrib.forms",
@@ -123,6 +124,18 @@ UNFOLD = {
                 ],
             },
             {
+                "title": "Запити",
+                "separator": True,
+                "collapsible": False,
+                "items": [
+                    {
+                        "title": "Запити на консультацію",
+                        "icon": "mail",
+                        "link": "/admin/contacts/consultationrequest/",
+                    },
+                ],
+            },
+            {
                 "title": "Налаштування",
                 "separator": True,
                 "collapsible": False,
@@ -131,6 +144,11 @@ UNFOLD = {
                         "title": "Налаштування сайту",
                         "icon": "settings",
                         "link": "/admin/core/sitesettings/1/change/",
+                    },
+                    {
+                        "title": "Написи інтерфейсу",
+                        "icon": "translate",
+                        "link": "/admin/core/uilabels/1/change/",
                     },
                 ],
             },
@@ -177,6 +195,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "apps.core.context_processors.lang_context",
                 "apps.core.context_processors.site_settings",
+                "apps.core.context_processors.ui_labels",
             ],
         },
     },

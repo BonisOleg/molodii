@@ -7,7 +7,7 @@
 <article class="page-article">
   <div class="container">
     <header class="page-article__header" data-reveal>
-      <p class="eyebrow">{% if LANG == "it" %}Contatti{% else %}Контакти{% endif %}</p>
+      <p class="eyebrow">{% t ui_labels "contacts_eyebrow" %}</p>
       <h1 class="page-article__title">{% t page "title" %}</h1>
       <p class="page-article__lead">{% t page "intro" %}</p>
     </header>
@@ -16,13 +16,13 @@
       <div class="contacts-grid__details" data-reveal>
         {% if site_settings.email %}
           <a class="contact-line" href="mailto:{{ site_settings.email }}">
-            <span class="contact-line__label">Email</span>
+            <span class="contact-line__label">{% t ui_labels "contacts_email" %}</span>
             <span class="contact-line__value">{{ site_settings.email }}</span>
           </a>
         {% endif %}
         {% if site_settings.phone %}
           <a class="contact-line" href="tel:{{ site_settings.phone }}">
-            <span class="contact-line__label">{% if LANG == "it" %}Telefono{% else %}Телефон{% endif %}</span>
+            <span class="contact-line__label">{% t ui_labels "contacts_phone" %}</span>
             <span class="contact-line__value">{{ site_settings.phone }}</span>
           </a>
         {% endif %}
@@ -30,7 +30,7 @@
         {% t page "working_hours" as hours %}
         {% if hours %}
           <div class="contact-line">
-            <span class="contact-line__label">{% if LANG == "it" %}Orari{% else %}Графік{% endif %}</span>
+            <span class="contact-line__label">{% t ui_labels "contacts_hours" %}</span>
             <span class="contact-line__value">{{ hours|linebreaksbr }}</span>
           </div>
         {% endif %}
@@ -53,36 +53,36 @@
         {% csrf_token %}
         {% if submitted %}
           <div class="form__notice form__notice--success" role="status">
-            {% if LANG == "it" %}Grazie! Ti risponderò al più presto.{% else %}Дякую! Я відповім вам найближчим часом.{% endif %}
+            {% t ui_labels "form_success" %}
           </div>
+        {% else %}
+          <label class="form__field">
+            <span class="form__label">{% t ui_labels "form_name" %}</span>
+            {{ form.name }}
+            {% if form.name.errors %}<span class="form__error">{{ form.name.errors.0 }}</span>{% endif %}
+          </label>
+
+          <label class="form__field">
+            <span class="form__label">{% t ui_labels "form_email" %}</span>
+            {{ form.email }}
+            {% if form.email.errors %}<span class="form__error">{{ form.email.errors.0 }}</span>{% endif %}
+          </label>
+
+          <label class="form__field">
+            <span class="form__label">{% t ui_labels "form_message" %}</span>
+            {{ form.message }}
+            {% if form.message.errors %}<span class="form__error">{{ form.message.errors.0 }}</span>{% endif %}
+          </label>
+
+          <label class="form__field form__field--honeypot" aria-hidden="true">
+            <span class="form__label">Company</span>
+            {{ form.company }}
+          </label>
+
+          <button class="btn btn--primary" type="submit">
+            {% t ui_labels "form_submit" %}
+          </button>
         {% endif %}
-
-        <label class="form__field">
-          <span class="form__label">{% if LANG == "it" %}Nome{% else %}Ім'я{% endif %}</span>
-          {{ form.name }}
-          {% if form.name.errors %}<span class="form__error">{{ form.name.errors.0 }}</span>{% endif %}
-        </label>
-
-        <label class="form__field">
-          <span class="form__label">Email</span>
-          {{ form.email }}
-          {% if form.email.errors %}<span class="form__error">{{ form.email.errors.0 }}</span>{% endif %}
-        </label>
-
-        <label class="form__field">
-          <span class="form__label">{% if LANG == "it" %}Messaggio{% else %}Повідомлення{% endif %}</span>
-          {{ form.message }}
-          {% if form.message.errors %}<span class="form__error">{{ form.message.errors.0 }}</span>{% endif %}
-        </label>
-
-        <label class="form__field form__field--honeypot" aria-hidden="true">
-          <span class="form__label">Company</span>
-          {{ form.company }}
-        </label>
-
-        <button class="btn btn--primary" type="submit">
-          {% if LANG == "it" %}Invia{% else %}Надіслати{% endif %}
-        </button>
       </form>
     </div>
   </div>
@@ -90,8 +90,8 @@
   {% if offices %}
     <section class="container offices">
       <div data-reveal>
-        <p class="eyebrow">{% if LANG == "it" %}Indirizzi{% else %}Адреси{% endif %}</p>
-        <h2 class="section__title">{% if LANG == "it" %}I miei studi{% else %}Кабінети{% endif %}</h2>
+        <p class="eyebrow">{% t ui_labels "contacts_offices_eyebrow" %}</p>
+        <h2 class="section__title">{% t ui_labels "contacts_offices_title" %}</h2>
       </div>
       <ul class="offices__list">
         {% for o in offices %}
@@ -106,7 +106,7 @@
               <p class="office-card__address">{% t o "address" %}</p>
               {% if o.map_url %}
                 <a class="link link--arrow" href="{{ o.map_url }}" target="_blank" rel="noopener noreferrer">
-                  {% if LANG == "it" %}Apri sulla mappa{% else %}Відкрити на карті{% endif %}
+                  {% t ui_labels "contacts_map_link" %}
                 </a>
               {% endif %}
             </div>

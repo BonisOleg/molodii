@@ -47,9 +47,10 @@
   gap: 48px;
 }
 
-.page-article__body .prose {
+.page-article__body > .prose {
   font-size: 1.05rem;
   color: var(--text-soft);
+  font-weight: 500;
   max-width: 60ch;
 }
 
@@ -108,7 +109,7 @@
   text-decoration: underline;
   text-decoration-color: var(--clay-soft);
   text-underline-offset: 3px;
-  word-break: break-all;
+  word-break: normal;
   transition: color var(--dur-1) var(--ease), text-decoration-color var(--dur-1) var(--ease);
 }
 
@@ -374,6 +375,11 @@
   .steps__item { grid-template-columns: 96px 1fr; gap: 28px; padding: 28px 0; }
   .steps__num { width: 72px; height: 72px; font-size: 1.6rem; }
   .steps__title { font-size: 1.6rem; }
+}
+
+.steps--inline {
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 /* ---------- Pricing band ---------- */

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from django.conf import settings
 
-from .models import SiteSettings
+from .models import SiteSettings, UILabels
 
 
 def lang_context(request):
@@ -35,3 +35,11 @@ def site_settings(request):
     except Exception:
         obj = None
     return {"site_settings": obj}
+
+
+def ui_labels(request):
+    try:
+        obj = UILabels.load()
+    except Exception:
+        obj = None
+    return {"ui_labels": obj}

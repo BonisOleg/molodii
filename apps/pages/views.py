@@ -1,7 +1,7 @@
 """Public page views."""
 from __future__ import annotations
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from apps.contacts.forms import ContactForm
 from apps.contacts.models import ContactsPage, Office, SocialLink
@@ -20,17 +20,17 @@ def home(request):
     services_page = ServicesPage.load()
     therapy_page = TherapyPage.load()
     contacts_page = ContactsPage.load()
-    submitted = False
     lang = getattr(request, "lang", "uk")
 
     if request.method == "POST":
         form = ContactForm(request.POST, lang=lang)
         if form.is_valid():
             handle_contact_submission(form.cleaned_data, request)
-            form = ContactForm(lang=lang)
-            submitted = True
+            return redirect(request.path + "?submitted=1#contacts")
     else:
         form = ContactForm(lang=lang)
+
+    submitted = request.GET.get("submitted") == "1"
 
     return render(request, "pages/home.html", {
         "page": page,
@@ -75,20 +75,16 @@ def contacts(request):
         form = ContactForm(request.POST, lang=lang)
         if form.is_valid():
             handle_contact_submission(form.cleaned_data, request)
-            return render(request, "contacts/contacts.html", {
-                "page": page,
-                "offices": Office.objects.all(),
-                "socials": SocialLink.objects.all(),
-                "form": ContactForm(lang=lang),
-                "submitted": True,
-            })
+            return redirect(request.path + "?submitted=1")
     else:
         form = ContactForm(lang=lang)
+
+    submitted = request.GET.get("submitted") == "1"
 
     return render(request, "contacts/contacts.html", {
         "page": page,
         "offices": Office.objects.all(),
         "socials": SocialLink.objects.all(),
         "form": form,
-        "submitted": False,
+        "submitted": submitted,
     })
