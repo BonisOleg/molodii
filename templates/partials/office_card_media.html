@@ -1,20 +1,29 @@
-{% load i18n_fields %}
-{% if o.photos.all %}
+{% load i18n_fields static %}
+{% if 'Monti' in o.address_uk %}
   <div class="office-card__media office-card__media--gallery">
     <div class="office-card__gallery">
-      {% for photo in o.photos.all %}
-        <figure class="office-card__figure">
-          <img
-            class="office-card__image office-card__image--natural"
-            src="{{ photo.image.url }}"
-            alt="{% t o 'city' %} — {% if LANG == 'it' %}foto {{ forloop.counter }}{% else %}фото {{ forloop.counter }}{% endif %}"
-            width="1024"
-            height="768"
-            loading="lazy"
-            decoding="async"
-          >
-        </figure>
-      {% endfor %}
+      <figure class="office-card__figure">
+        <img
+          class="office-card__image office-card__image--natural"
+          src="{% static 'img/offices/cernobbio/interior-01.jpg' %}"
+          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 1{% else %}фото 1{% endif %}"
+          width="1024"
+          height="768"
+          loading="lazy"
+          decoding="async"
+        >
+      </figure>
+      <figure class="office-card__figure">
+        <img
+          class="office-card__image office-card__image--natural"
+          src="{% static 'img/offices/cernobbio/interior-02.jpg' %}"
+          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 2{% else %}фото 2{% endif %}"
+          width="1024"
+          height="768"
+          loading="lazy"
+          decoding="async"
+        >
+      </figure>
     </div>
   </div>
 {% elif o.photo %}

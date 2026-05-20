@@ -6,6 +6,11 @@ from django.utils import timezone
 
 from apps.core.models import SingletonModel
 
+CERNOBBIO_GALLERY_STATIC = (
+    "img/offices/cernobbio/interior-01.jpg",
+    "img/offices/cernobbio/interior-02.jpg",
+)
+
 
 class ContactsPage(SingletonModel):
     title_uk = models.CharField("Заголовок (UA)", max_length=200, default="Контакти")
@@ -39,6 +44,36 @@ class Office(models.Model):
 
     def __str__(self) -> str:
         return f"{self.city_uk} — {self.address_uk}"
+
+    @property
+    def gallery_image_urls(self) -> list[str]:
+        """DB/CDN photos when available; otherwise bundled static files."""
+        from django.templatetags.static import static
+
+        urls: list[str] = []
+        prefetched = getattr(self, "_prefetched_objects_cache", {}).get("photos")
+        photos = (
+            sorted(prefetched, key=lambda p: (p.order, p.pk))
+            if prefetched is not None
+            else self.photos.order_by("order", "pk")
+        )
+        for photo in photos:
+            if not photo.image:
+                continue
+            try:
+                urls.append(photo.image.url)
+            except (ValueError, OSError):
+                continue
+        if urls:
+            return urls
+        if self.photo:
+            try:
+                return [self.photo.url]
+            except (ValueError, OSError):
+                pass
+        if "Monti" in self.address_uk:
+            return [static(path) for path in CERNOBBIO_GALLERY_STATIC]
+        return []
 
 
 class OfficePhoto(models.Model):
