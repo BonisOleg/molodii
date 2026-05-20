@@ -1,66 +1,58 @@
 {% load i18n_fields static %}
-{% if 'Monti' in o.address_uk %}
-  <div class="office-card__media office-card__media--gallery">
-    <div class="office-card__gallery">
-      <figure class="office-card__figure">
-        <img
-          class="office-card__image office-card__image--natural"
-          src="{% static 'img/offices/cernobbio/interior-01.jpg' %}"
-          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 1{% else %}фото 1{% endif %}"
-          width="1024"
-          height="768"
-          loading="lazy"
-          decoding="async"
-        >
-      </figure>
-      <figure class="office-card__figure">
-        <img
-          class="office-card__image office-card__image--natural"
-          src="{% static 'img/offices/cernobbio/interior-02.jpg' %}"
-          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 2{% else %}фото 2{% endif %}"
-          width="1024"
-          height="768"
-          loading="lazy"
-          decoding="async"
-        >
-      </figure>
+{% with gallery=o.gallery_image_urls %}
+  {% if gallery|length >= 2 %}
+    <div class="office-card__media office-card__media--carousel">
+      <div
+        class="office-card__carousel"
+        data-office-carousel
+        aria-label="{% if LANG == 'it' %}Galleria foto{% else %}Галерея фото{% endif %}"
+      >
+        <div class="office-card__carousel-track" role="group">
+          {% for src in gallery %}
+            <figure class="office-card__carousel-slide{% if forloop.first %} is-active{% endif %}"{% if not forloop.first %} aria-hidden="true"{% endif %}>
+              <img
+                class="office-card__image"
+                src="{{ src }}"
+                alt="{% t o 'city' %} — {% if LANG == 'it' %}foto {{ forloop.counter }}{% else %}фото {{ forloop.counter }}{% endif %}"
+                width="1024"
+                height="768"
+                {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}
+                decoding="async"
+              >
+            </figure>
+          {% endfor %}
+        </div>
+        <div class="office-card__carousel-dots">
+          {% for src in gallery %}
+            <button
+              type="button"
+              class="office-card__carousel-dot{% if forloop.first %} is-active{% endif %}"
+              aria-label="{% if LANG == 'it' %}Mostra foto {{ forloop.counter }}{% else %}Показати фото {{ forloop.counter }}{% endif %}"
+              {% if forloop.first %}aria-current="true"{% endif %}
+            ></button>
+          {% endfor %}
+        </div>
+      </div>
     </div>
-  </div>
-{% elif 'Camelie' in o.address_uk %}
-  <div class="office-card__media office-card__media--gallery">
-    <div class="office-card__gallery">
-      <figure class="office-card__figure">
-        <img
-          class="office-card__image office-card__image--natural"
-          src="{% static 'img/offices/milan/interior-01.jpg' %}"
-          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 1{% else %}фото 1{% endif %}"
-          width="576"
-          height="1024"
-          loading="lazy"
-          decoding="async"
-        >
-      </figure>
-      <figure class="office-card__figure">
-        <img
-          class="office-card__image office-card__image--natural"
-          src="{% static 'img/offices/milan/interior-02.jpg' %}"
-          alt="{% t o 'city' %} — {% if LANG == 'it' %}foto 2{% else %}фото 2{% endif %}"
-          width="576"
-          height="1024"
-          loading="lazy"
-          decoding="async"
-        >
-      </figure>
+  {% elif gallery|length == 1 %}
+    <div class="office-card__media">
+      <img
+        class="office-card__image office-card__image--natural"
+        src="{{ gallery.0 }}"
+        alt="{% t o 'city' %}"
+        loading="lazy"
+        decoding="async"
+      >
     </div>
-  </div>
-{% elif o.photo %}
-  <div class="office-card__media">
-    <img
-      class="office-card__image office-card__image--natural"
-      src="{{ o.photo.url }}"
-      alt="{% t o 'city' %}"
-      loading="lazy"
-      decoding="async"
-    >
-  </div>
-{% endif %}
+  {% elif o.photo %}
+    <div class="office-card__media">
+      <img
+        class="office-card__image office-card__image--natural"
+        src="{{ o.photo.url }}"
+        alt="{% t o 'city' %}"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+  {% endif %}
+{% endwith %}

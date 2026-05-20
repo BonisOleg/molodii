@@ -147,4 +147,74 @@
       updateActiveLink();
     }
   }
+
+  /* ---------- Office photo carousel ---------- */
+
+  const officeCarousels = document.querySelectorAll("[data-office-carousel]");
+  if (officeCarousels.length) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const intervalMs = 5000;
+
+    officeCarousels.forEach((root) => {
+      const slides = Array.from(root.querySelectorAll(".office-card__carousel-slide"));
+      const dots = Array.from(root.querySelectorAll(".office-card__carousel-dot"));
+      if (slides.length < 2) return;
+
+      let index = 0;
+      let timerId = null;
+
+      const goTo = (nextIndex) => {
+        index = ((nextIndex % slides.length) + slides.length) % slides.length;
+        slides.forEach((slide, idx) => {
+          const active = idx === index;
+          slide.classList.toggle("is-active", active);
+          slide.setAttribute("aria-hidden", String(!active));
+        });
+        dots.forEach((dot, idx) => {
+          const active = idx === index;
+          dot.classList.toggle("is-active", active);
+          if (active) {
+            dot.setAttribute("aria-current", "true");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
+        });
+      };
+
+      const stop = () => {
+        if (timerId !== null) {
+          window.clearInterval(timerId);
+          timerId = null;
+        }
+      };
+
+      const start = () => {
+        if (reducedMotion) return;
+        stop();
+        timerId = window.setInterval(() => goTo(index + 1), intervalMs);
+      };
+
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => {
+          goTo(dotIndex);
+          start();
+        });
+      });
+
+      root.addEventListener("mouseenter", stop);
+      root.addEventListener("mouseleave", start);
+      root.addEventListener("focusin", stop);
+      root.addEventListener("focusout", (event) => {
+        if (!root.contains(event.relatedTarget)) start();
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stop();
+        else start();
+      });
+
+      goTo(0);
+      start();
+    });
+  }
 })();

@@ -10,6 +10,10 @@ CERNOBBIO_GALLERY_STATIC = (
     "img/offices/cernobbio/interior-01.jpg",
     "img/offices/cernobbio/interior-02.jpg",
 )
+MILAN_GALLERY_STATIC = (
+    "img/offices/milan/interior-01.jpg",
+    "img/offices/milan/interior-02.jpg",
+)
 
 
 class ContactsPage(SingletonModel):
@@ -73,6 +77,8 @@ class Office(models.Model):
                 pass
         if "Monti" in self.address_uk:
             return [static(path) for path in CERNOBBIO_GALLERY_STATIC]
+        if "Camelie" in self.address_uk:
+            return [static(path) for path in MILAN_GALLERY_STATIC]
         return []
 
 
