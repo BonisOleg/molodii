@@ -441,6 +441,83 @@
   margin-bottom: 0;
 }
 
+/* ---------- Therapy steps: photo + nums | text panel ---------- */
+
+.therapy-formats--split .therapy-formats__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.therapy-formats--split .therapy-formats__nums {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.therapy-formats--split .steps__num {
+  width: 56px;
+  height: 56px;
+  font-size: 1.2rem;
+  background: var(--clay);
+  color: var(--bg);
+  border-color: var(--clay);
+}
+
+.therapy-formats--split .therapy-formats__panel {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: 28px 32px;
+}
+
+.therapy-formats--split .steps--panel {
+  margin: 0;
+  padding: 0;
+}
+
+.therapy-formats--split .steps--panel::before {
+  display: none;
+}
+
+.therapy-formats--split .steps__item {
+  display: block;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.therapy-formats--split .steps__item:first-child {
+  padding-top: 0;
+}
+
+.therapy-formats--split .steps__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.therapy-formats--split .steps__body {
+  padding-top: 0;
+}
+
+@media (min-width: 768px) {
+  .therapy-formats--split .steps__num {
+    width: 72px;
+    height: 72px;
+    font-size: 1.6rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .therapy-formats--split {
+    align-items: stretch;
+  }
+
+  .therapy-formats--split .therapy-formats__panel {
+    padding: 36px 40px;
+  }
+}
+
 /* ---------- Pricing band ---------- */
 
 .pricing-band {
