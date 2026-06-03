@@ -19,7 +19,7 @@ from apps.pages.about_content import (
 from apps.pages.models import (
     AboutPage, HomePage, ServiceItem, ServicesPage, TherapyPage,
 )
-from apps.pages.services_content import SERVICE_ITEMS_UK, SERVICES_OUTRO_UK
+from apps.pages.services_content import SERVICE_TOPICS, SERVICES_OUTRO_UK
 from apps.contacts.models import ContactsPage
 
 
@@ -113,22 +113,30 @@ def test_contacts_office_static_gallery(client: Client):
     assert "img/offices/cernobbio/" in html
 
 
-def test_services_page_renders_bullet_list(client: Client):
+def test_services_page_renders_topics_list(client: Client):
     page = ServicesPage.load()
     page.intro_uk = "Ви можете звернутися до мене, якщо відчуваєте:"
     page.outro_uk = SERVICES_OUTRO_UK
     page.save(update_fields=["intro_uk", "outro_uk"])
 
     page.items.all().delete()
-    for i, title in enumerate(SERVICE_ITEMS_UK):
-        ServiceItem.objects.create(page=page, order=i, title_uk=title, title_it="")
+    for i, (title_uk, title_it, desc_uk, desc_it) in enumerate(SERVICE_TOPICS):
+        ServiceItem.objects.create(
+            page=page,
+            order=i,
+            title_uk=title_uk,
+            title_it=title_it,
+            description_uk=desc_uk,
+            description_it=desc_it,
+        )
 
     html = client.get("/services/").content.decode("utf-8")
-    assert "труднощі адаптації до нової країни" in html
-    assert "тривожні або депресивні стани" in html
+    assert "Тривога і панічні атаки" in html
+    assert "Як повернути контакт із собою" in html
+    assert 'class="topics"' in html
+    assert 'class="topics__num"' in html
     assert "Напишіть мені для того щоб дізнатись вартість зустрічей." in html
-    assert "Тривога і панічні атаки" not in html
-    assert 'class="services-list"' in html
+    assert 'class="services-list"' not in html
 
 
 def test_healthz(client: Client):

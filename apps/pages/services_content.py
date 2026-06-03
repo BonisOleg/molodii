@@ -16,7 +16,49 @@ SERVICES_OUTRO_IT = (
     "Scrivimi per conoscere le tariffe degli incontri."
 )
 
-SERVICE_ITEMS_UK = [
+# (title_uk, title_it, description_uk, description_it)
+SERVICE_TOPICS = [
+    (
+        "Тривога і панічні атаки",
+        "Ansia e attacchi di panico",
+        "Як повернути контакт із собою, коли тіло «вмикає» тривогу.",
+        "Come ritrovare il contatto con sé quando il corpo 'accende' l'ansia.",
+    ),
+    (
+        "Стосунки і розставання",
+        "Relazioni e separazioni",
+        "Конфлікти, межі, втрата близькості, рішення «залишитись чи піти».",
+        "Conflitti, confini, perdita di intimità, decisione 'restare o andare'.",
+    ),
+    (
+        "Втрата і горе",
+        "Perdita e lutto",
+        "Простір прожити втрату — близької людини, дому, попереднього життя.",
+        "Uno spazio per attraversare la perdita — di una persona cara, di una casa, della vita precedente.",
+    ),
+    (
+        "Самооцінка і самокритика",
+        "Autostima e autocritica",
+        "Чому «я недостатньо хороший» — і як з цим вчитися інакше.",
+        "Perché 'non sono abbastanza' — e come imparare diversamente.",
+    ),
+    (
+        "Вигорання і втома",
+        "Burnout e stanchezza",
+        "Коли робота й піклування витискають усе. Робота з ресурсом.",
+        "Quando lavoro e cura prosciugano tutto. Lavoro sulla risorsa.",
+    ),
+    (
+        "Адаптація після переїзду",
+        "Adattamento dopo la migrazione",
+        "Ідентичність, мова, самотність, «ні там, ні тут».",
+        "Identità, lingua, solitudine, 'né qui né là'.",
+    ),
+]
+
+# Bullet-list copy replaced by migration 0017 — used to detect stale prod data.
+# Kept for migration 0017 imports on fresh installs.
+SERVICE_ITEMS_UK = BULLET_SERVICE_TITLES_UK = [
     "труднощі адаптації до нової країни, культури або життєвого етапу",
     "розгубленість, пов'язану з еміграцією чи змінами в житті",
     "травматичний досвід, який продовжує впливати на сьогодення",
@@ -40,24 +82,20 @@ SERVICE_ITEMS_IT = [
     "stati d'ansia o di depressione",
 ]
 
-LEGACY_SERVICE_TITLES = {
-    "Тривога і панічні атаки",
-    "Стосунки і розставання",
-    "Втрата і горе",
-    "Самооцінка і самокритика",
-    "Вигорання і втома",
-    "Адаптація після переїзду",
-}
-
 
 def services_items_are_stale(items) -> bool:
     item_list = list(items)
-    if len(item_list) != len(SERVICE_ITEMS_UK):
+    if len(item_list) != len(SERVICE_TOPICS):
         return True
-    for item in item_list:
-        if item.title_uk in LEGACY_SERVICE_TITLES:
+    for item, (title_uk, title_it, desc_uk, desc_it) in zip(item_list, SERVICE_TOPICS):
+        if item.title_uk != title_uk or item.title_it != title_it:
             return True
-        if item.description_uk or item.description_it:
+        if item.description_uk != desc_uk or item.description_it != desc_it:
             return True
-    titles = [item.title_uk for item in item_list]
-    return titles != SERVICE_ITEMS_UK
+    return False
+
+
+def services_items_are_bullet_list(items) -> bool:
+    """True when DB still has the short-lived bullet-list seed from migration 0017."""
+    titles = [item.title_uk for item in items]
+    return titles == BULLET_SERVICE_TITLES_UK
