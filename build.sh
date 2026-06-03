@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Build step for Render (і сумісних PaaS): залежності, статика, міграції.
 set -o errexit
 
 pip install -r requirements.txt

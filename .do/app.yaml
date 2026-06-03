@@ -1,0 +1,101 @@
+# DigitalOcean App Platform — psycholog-site
+# 1. Замініть github.repo на ваш репозиторій (org/name).
+# 2. Секрети (SECRET_KEY, email, Cloudinary) задайте в панелі DO або через doctl.
+# 3. Деплой: doctl apps create --spec .do/app.yaml
+#    або імпортуйте spec при створенні застосунку в Control Panel.
+
+name: psycholog-site
+region: fra1
+
+features:
+  - buildpack-stack=ubuntu-22
+
+alerts:
+  - rule: DEPLOYMENT_FAILED
+  - rule: DOMAIN_FAILED
+
+databases:
+  - name: db
+    engine: PG
+    version: "16"
+
+services:
+  - name: web
+    github:
+      repo: YOUR_ORG/YOUR_REPO
+      branch: main
+      deploy_on_push: true
+    build_command: ./build.sh
+    run_command: ./bin/web
+    http_port: 8080
+    health_check:
+      http_path: /healthz
+      initial_delay_seconds: 15
+      period_seconds: 10
+      timeout_seconds: 5
+    envs:
+      - key: DJANGO_SETTINGS_MODULE
+        value: project.settings.production
+        scope: RUN_AND_BUILD_TIME
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+        scope: BUILD_TIME
+      - key: DEBUG
+        value: "False"
+        scope: RUN_TIME
+      - key: SECURE_SSL_REDIRECT
+        value: "True"
+        scope: RUN_TIME
+      - key: DATABASE_URL
+        value: ${db.DATABASE_URL}
+        scope: RUN_TIME
+      - key: SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: CLOUDINARY_CLOUD_NAME
+        scope: RUN_TIME
+        type: SECRET
+      - key: CLOUDINARY_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: CLOUDINARY_API_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: EMAIL_HOST_USER
+        scope: RUN_TIME
+        type: SECRET
+      - key: EMAIL_HOST_PASSWORD
+        scope: RUN_TIME
+        type: SECRET
+      - key: DEFAULT_FROM_EMAIL
+        scope: RUN_TIME
+        type: SECRET
+      - key: CONTACT_RECIPIENT
+        scope: RUN_TIME
+        type: SECRET
+      # Додаткові домени (через кому), якщо є власний домен:
+      - key: ALLOWED_HOSTS
+        value: ""
+        scope: RUN_TIME
+      - key: CSRF_TRUSTED_ORIGINS
+        value: ""
+        scope: RUN_TIME
+
+jobs:
+  - name: migrate
+    kind: PRE_DEPLOY
+    github:
+      repo: YOUR_ORG/YOUR_REPO
+      branch: main
+      deploy_on_push: true
+    run_command: python manage.py migrate --noinput
+    envs:
+      - key: DJANGO_SETTINGS_MODULE
+        value: project.settings.production
+        scope: RUN_AND_BUILD_TIME
+      - key: DATABASE_URL
+        value: ${db.DATABASE_URL}
+        scope: RUN_TIME
+      - key: SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET

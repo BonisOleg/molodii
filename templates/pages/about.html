@@ -13,9 +13,7 @@
   <div class="container">
     <div class="about-stage">
       <div class="about-stage__media" data-reveal>
-        {% if page.photo %}
-          <img class="about-stage__image" src="{{ page.photo.url }}" alt="" loading="lazy" decoding="async">
-        {% endif %}
+        <img class="about-stage__image" src="{{ page.photo_url }}" alt="" loading="lazy" decoding="async">
       </div>
       <div class="about-stage__copy" data-reveal>
         <p class="about-stage__lead">{% t page "lead" %}</p>

@@ -30,6 +30,15 @@ class SiteSettings(SingletonModel):
     tagline_uk = models.CharField("Підзаголовок (UA)", max_length=240, blank=True, default="")
     tagline_it = models.CharField("Підзаголовок (IT)", max_length=240, blank=True, default="")
     email = models.EmailField("Email", blank=True, default="")
+    notification_email = models.EmailField(
+        "Email для сповіщень про запис",
+        blank=True,
+        default="",
+        help_text=(
+            "Куди надсилати листи про нові запити на консультацію. "
+            "Якщо порожньо — використовується публічний Email вище."
+        ),
+    )
     phone = models.CharField("Телефон", max_length=64, blank=True, default="")
     og_image = models.ImageField("OG-зображення", upload_to="site/", blank=True, null=True)
 
@@ -39,6 +48,16 @@ class SiteSettings(SingletonModel):
 
     def __str__(self) -> str:
         return self.brand_name_uk or "Site settings"
+
+    def get_notification_email(self) -> str:
+        """Recipient for consultation form notifications (admin → env fallback)."""
+        if self.notification_email:
+            return self.notification_email
+        if self.email:
+            return self.email
+        from django.conf import settings
+
+        return settings.CONTACT_RECIPIENT
 
 
 class UILabels(SingletonModel):

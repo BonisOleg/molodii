@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Gunicorn entrypoint for Render (PORT задається платформою).
+set -o errexit
+
+exec gunicorn project.wsgi:application \
+  --bind "0.0.0.0:${PORT:-8080}" \
+  --worker-tmp-dir /dev/shm \
+  --workers "${WEB_CONCURRENCY:-2}" \
+  --threads "${WEB_THREADS:-4}" \
+  --worker-class gthread \
+  --log-file - \
+  --access-logfile -

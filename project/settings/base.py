@@ -16,7 +16,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
-    "apps.devserver",
     "unfold",
     "unfold.contrib.filters",
     "unfold.contrib.forms",
@@ -28,9 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-
-    "cloudinary",
-    "cloudinary_storage",
 
     "apps.core",
     "apps.pages",
@@ -243,15 +239,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", ""),
-    "API_KEY": os.environ.get("CLOUDINARY_API_KEY", ""),
-    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET", ""),
-}
-
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",

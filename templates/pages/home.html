@@ -24,9 +24,7 @@
       </div>
     </div>
     <figure class="hero__figure" data-reveal>
-      {% if page.hero_image %}
-        <img class="hero__image" src="{{ page.hero_image.url }}" alt="" loading="eager" decoding="async">
-      {% endif %}
+      <img class="hero__image" src="{{ page.hero_image_url }}" alt="" loading="eager" decoding="async">
       <span class="hero__badge">
         {% t ui_labels "hero_badge" %}
       </span>
@@ -49,9 +47,7 @@
   <div class="container section__inner">
     <div class="section__media" data-reveal>
       <span class="section__media-tag">{% t ui_labels "about_tag" %}</span>
-      {% if page.about_image %}
-        <img class="section__image" src="{{ page.about_image.url }}" alt="" loading="lazy" decoding="async">
-      {% endif %}
+      <img class="section__image" src="{{ page.about_image_url }}" alt="" loading="lazy" decoding="async">
     </div>
     <div class="section__copy" data-reveal>
       <p class="eyebrow">{% t ui_labels "about_eyebrow" %}</p>
@@ -143,11 +139,11 @@
     {% t therapy "format_offline" as fmt_offline %}
     {% if fmt_online or fmt_offline %}
     <div class="therapy-formats">
-      {% if therapy.image %}
+      {% if therapy.image_url %}
       <div class="therapy-formats__media" data-reveal>
         <img
           class="therapy-formats__image"
-          src="{{ therapy.image.url }}"
+          src="{{ therapy.image_url }}"
           alt="{% t ui_labels 'therapy_eyebrow' %}"
           width="600"
           loading="lazy"
@@ -170,11 +166,11 @@
     </div>
     {% endif %}
     <div class="therapy-formats">
-      {% if not fmt_online and not fmt_offline and therapy.image %}
+      {% if not fmt_online and not fmt_offline and therapy.image_url %}
       <div class="therapy-formats__media" data-reveal>
         <img
           class="therapy-formats__image"
-          src="{{ therapy.image.url }}"
+          src="{{ therapy.image_url }}"
           alt="{% t ui_labels 'therapy_eyebrow' %}"
           width="600"
           loading="lazy"

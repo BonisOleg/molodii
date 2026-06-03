@@ -52,7 +52,7 @@ class SiteSettingsAdmin(SingletonAdmin):
         (
             "Контакт",
             {
-                "fields": ("email", "phone"),
+                "fields": ("email", "notification_email", "phone"),
                 "classes": ["tab"],
             },
         ),

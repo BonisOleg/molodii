@@ -16,11 +16,11 @@
   {% if fmt_online or fmt_offline %}
   <section class="container">
     <div class="therapy-formats">
-      {% if page.image %}
+      {% if page.image_url %}
       <div class="therapy-formats__media" data-reveal>
         <img
           class="therapy-formats__image"
-          src="{{ page.image.url }}"
+          src="{{ page.image_url }}"
           alt="{% t ui_labels 'therapy_eyebrow' %}"
           width="600"
           loading="lazy"
@@ -50,11 +50,11 @@
       <h2 class="section__title">{% t ui_labels "therapy_steps_title" %}</h2>
     </div>
     <div class="therapy-formats">
-      {% if not fmt_online and not fmt_offline and page.image %}
+      {% if not fmt_online and not fmt_offline and page.image_url %}
       <div class="therapy-formats__media" data-reveal>
         <img
           class="therapy-formats__image"
-          src="{{ page.image.url }}"
+          src="{{ page.image_url }}"
           alt="{% t ui_labels 'therapy_eyebrow' %}"
           width="600"
           loading="lazy"

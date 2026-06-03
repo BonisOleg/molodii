@@ -51,8 +51,13 @@ class Office(models.Model):
 
     @property
     def gallery_image_urls(self) -> list[str]:
-        """DB/CDN photos when available; otherwise bundled static files."""
+        """Bundled static photos for known offices; optional admin upload for others."""
         from django.templatetags.static import static
+
+        if "Monti" in self.address_uk:
+            return [static(path) for path in CERNOBBIO_GALLERY_STATIC]
+        if "Camelie" in self.address_uk:
+            return [static(path) for path in MILAN_GALLERY_STATIC]
 
         urls: list[str] = []
         prefetched = getattr(self, "_prefetched_objects_cache", {}).get("photos")
@@ -65,20 +70,18 @@ class Office(models.Model):
             if not photo.image:
                 continue
             try:
-                urls.append(photo.image.url)
+                if photo.image.storage.exists(photo.image.name):
+                    urls.append(photo.image.url)
             except (ValueError, OSError):
                 continue
         if urls:
             return urls
         if self.photo:
             try:
-                return [self.photo.url]
+                if self.photo.storage.exists(self.photo.name):
+                    return [self.photo.url]
             except (ValueError, OSError):
                 pass
-        if "Monti" in self.address_uk:
-            return [static(path) for path in CERNOBBIO_GALLERY_STATIC]
-        if "Camelie" in self.address_uk:
-            return [static(path) for path in MILAN_GALLERY_STATIC]
         return []
 
 

@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from django.test import Client
+from django.test import Client, override_settings
+from django.core import mail
 from django.template import Context, Template
 
 from apps.core.models import SiteSettings
@@ -61,6 +62,20 @@ def test_t_tag_falls_back_to_uk():
     assert tpl.render(Context({"page": page, "LANG": "it"})) == "UA"
 
 
+def test_bundled_static_images_on_home(client: Client):
+    resp = client.get("/")
+    html = resp.content.decode("utf-8")
+    assert "img/seed/hero" in html
+    assert "img/seed/about" in html
+
+
+def test_contacts_office_static_gallery(client: Client):
+    resp = client.get("/contacts/")
+    html = resp.content.decode("utf-8")
+    assert "img/offices/milan/" in html
+    assert "img/offices/cernobbio/" in html
+
+
 def test_healthz(client: Client):
     resp = client.get("/healthz")
     assert resp.status_code == 200
@@ -83,3 +98,41 @@ def test_contact_form_honeypot_blocks_bot(client: Client):
     })
     assert resp.status_code == 200
     assert "submitted=True" not in resp.content.decode("utf-8").replace(" ", "")
+
+
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+def test_contact_form_sends_to_notification_email(client: Client):
+    site = SiteSettings.load()
+    site.notification_email = "notify@example.com"
+    site.save(update_fields=["notification_email"])
+
+    client.post("/contacts/", data={
+        "name": "Клієнт",
+        "email": "client@example.com",
+        "message": "Хочу консультацію",
+        "company": "",
+    })
+
+    assert len(mail.outbox) == 1
+    assert mail.outbox[0].to == ["notify@example.com"]
+
+
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    CONTACT_RECIPIENT="fallback@example.com",
+)
+def test_contact_form_falls_back_to_public_email(client: Client):
+    site = SiteSettings.load()
+    site.email = "public@example.com"
+    site.notification_email = ""
+    site.save(update_fields=["email", "notification_email"])
+
+    client.post("/contacts/", data={
+        "name": "Клієнт",
+        "email": "client@example.com",
+        "message": "Хочу консультацію",
+        "company": "",
+    })
+
+    assert len(mail.outbox) == 1
+    assert mail.outbox[0].to == ["public@example.com"]

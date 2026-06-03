@@ -3,7 +3,12 @@ from __future__ import annotations
 
 from django.db import models
 
+from apps.core.images import display_image_url
 from apps.core.models import SingletonModel
+
+HERO_IMAGE_STATIC = "img/seed/hero.png"
+ABOUT_IMAGE_STATIC = "img/seed/about.png"
+THERAPY_IMAGE_STATIC = "img/seed/therapy.png"
 
 
 class HomePage(SingletonModel):
@@ -27,6 +32,14 @@ class HomePage(SingletonModel):
     def __str__(self) -> str:
         return "Головна"
 
+    @property
+    def hero_image_url(self) -> str:
+        return display_image_url(self.hero_image, HERO_IMAGE_STATIC)
+
+    @property
+    def about_image_url(self) -> str:
+        return display_image_url(self.about_image, ABOUT_IMAGE_STATIC)
+
 
 class AboutPage(SingletonModel):
     title_uk = models.CharField("Заголовок (UA)", max_length=200, default="Про мене")
@@ -47,6 +60,10 @@ class AboutPage(SingletonModel):
 
     def __str__(self) -> str:
         return self.title_uk or "Про мене"
+
+    @property
+    def photo_url(self) -> str:
+        return display_image_url(self.photo, ABOUT_IMAGE_STATIC)
 
 
 class ServicesPage(SingletonModel):
@@ -101,6 +118,10 @@ class TherapyPage(SingletonModel):
 
     def __str__(self) -> str:
         return self.title_uk
+
+    @property
+    def image_url(self) -> str:
+        return display_image_url(self.image, THERAPY_IMAGE_STATIC)
 
 
 class TherapyStep(models.Model):
