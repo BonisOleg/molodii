@@ -64,6 +64,14 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  background: transparent;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(244, 239, 230, 0.86);
   border-bottom: 1px solid var(--line);
   backdrop-filter: saturate(140%) blur(12px);
@@ -71,17 +79,43 @@
   transition: background-color var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
 }
 
-.header.is-scrolled {
+.header.is-scrolled::before {
   background: rgba(244, 239, 230, 0.96);
   border-color: var(--line-soft);
 }
 
 .header__inner {
+  position: relative;
   height: var(--header-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+/* iOS in-app browsers (Telegram etc.): sticky + backdrop-filter leaves a gap above the bar */
+@media (max-width: 959px) {
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .header::before {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .header.is-scrolled::before {
+    background: var(--bg);
+  }
+
+  body {
+    padding-top: var(--header-h);
+  }
 }
 
 .header__brand {
