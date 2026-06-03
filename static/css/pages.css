@@ -218,6 +218,15 @@
   letter-spacing: 0.04em;
 }
 
+.topics__line {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
 .topics__title {
   font-size: clamp(1.35rem, 2.8vw, 1.75rem);
   margin: 0;
@@ -242,6 +251,12 @@
     gap: 24px;
     align-items: baseline;
     padding: 32px 0;
+  }
+  .topics__item--solo {
+    grid-template-columns: 80px 1fr;
+  }
+  .topics__item--solo .topics__line {
+    padding-right: 56px;
   }
   .topics__desc { padding-right: 56px; }
 }

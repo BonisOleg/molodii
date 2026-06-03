@@ -14,11 +14,9 @@
   <div class="container">
     <ul class="topics">
       {% for item in items %}
-        <li class="topics__item" data-reveal data-reveal-group>
+        <li class="topics__item topics__item--solo" data-reveal data-reveal-group>
           <span class="topics__num">{{ forloop.counter|stringformat:"02d" }}</span>
-          <h2 class="topics__title">{% t item "title" %}</h2>
-          {% t item "description" as desc %}
-          {% if desc %}<p class="topics__desc">{{ desc }}</p>{% endif %}
+          <p class="topics__line">{% t item "title" %}</p>
         </li>
       {% empty %}
         <li class="topics__item topics__item--empty">

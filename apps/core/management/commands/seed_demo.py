@@ -15,7 +15,8 @@ from apps.pages.about_content import (
     education_has_raw_url,
 )
 from apps.pages.services_content import (
-    SERVICE_TOPICS,
+    SERVICE_ITEMS_IT,
+    SERVICE_ITEMS_UK,
     SERVICES_INTRO_IT,
     SERVICES_INTRO_UK,
     SERVICES_OUTRO_IT,
@@ -146,24 +147,24 @@ class Command(BaseCommand):
             s.save(update_fields=["intro_uk", "intro_it", "outro_uk", "outro_it"])
 
             s.items.all().delete()
-            for i, (title_uk, title_it, desc_uk, desc_it) in enumerate(SERVICE_TOPICS):
+            for i, (title_uk, title_it) in enumerate(zip(SERVICE_ITEMS_UK, SERVICE_ITEMS_IT)):
                 ServiceItem.objects.create(
                     page=s,
                     order=i,
                     title_uk=title_uk,
                     title_it=title_it,
-                    description_uk=desc_uk,
-                    description_it=desc_it,
+                    description_uk="",
+                    description_it="",
                 )
         elif not s.items.exists():
-            for i, (title_uk, title_it, desc_uk, desc_it) in enumerate(SERVICE_TOPICS):
+            for i, (title_uk, title_it) in enumerate(zip(SERVICE_ITEMS_UK, SERVICE_ITEMS_IT)):
                 ServiceItem.objects.create(
                     page=s,
                     order=i,
                     title_uk=title_uk,
                     title_it=title_it,
-                    description_uk=desc_uk,
-                    description_it=desc_it,
+                    description_uk="",
+                    description_it="",
                 )
 
     def _seed_therapy(self) -> None:
