@@ -19,8 +19,22 @@
       <p class="eyebrow">{% t ui_labels "therapy_steps_eyebrow" %}</p>
       <h2 class="section__title">{% t ui_labels "therapy_steps_title" %}</h2>
     </div>
-    <div class="therapy-formats therapy-formats--split">
-      {% include "partials/therapy_step_list.html" with image_url=page.image_url %}
+    <div class="therapy-formats therapy-formats--steps">
+      {% if page.image_url %}
+      <div class="therapy-formats__media" data-reveal>
+        <img
+          class="therapy-formats__image"
+          src="{{ page.image_url }}"
+          alt="{% t ui_labels 'therapy_eyebrow' %}"
+          width="600"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+      {% endif %}
+      <div class="therapy-formats__copy">
+        {% include "partials/therapy_step_list.html" %}
+      </div>
     </div>
     {% if fmt_online or fmt_offline %}
     <div class="therapy-formats therapy-formats--cards">
