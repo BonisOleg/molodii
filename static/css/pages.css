@@ -174,76 +174,39 @@
   }
 }
 
-/* ---------- Topics (services list) — magazine-style numbered grid ---------- */
+/* ---------- Services — bullet list ---------- */
 
-.topics {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
+.services-list {
   margin: 24px 0 56px;
-  border-top: 1px solid var(--line);
-}
-
-.topics__item {
-  position: relative;
-  padding: 28px 0 28px 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  transition: padding var(--dur-2) var(--ease);
-}
-
-.topics__item::before {
-  content: "→";
-  position: absolute;
-  right: 0;
-  top: 28px;
-  color: var(--clay);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
-}
-
-.topics__item:hover {
-  padding-left: 18px;
-}
-
-.topics__item:hover::before { opacity: 1; transform: translateX(0); }
-
-.topics__num {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--clay);
-  letter-spacing: 0.04em;
-}
-
-.topics__title {
-  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
-  margin: 0;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.topics__desc {
-  color: var(--text-soft);
-  margin: 0;
   max-width: 60ch;
+  display: grid;
+  gap: 14px;
 }
 
-.topics__item--empty {
+.services-list__item {
+  position: relative;
+  padding-left: 1.35em;
+  font-size: 1.05rem;
+  color: var(--text-soft);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.services-list__item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--clay);
+}
+
+.services-list__item--empty {
+  padding-left: 0;
   color: var(--muted);
   font-style: italic;
 }
 
-@media (min-width: 768px) {
-  .topics__item {
-    grid-template-columns: 80px 1fr 2fr;
-    gap: 24px;
-    align-items: baseline;
-    padding: 32px 0;
-  }
-  .topics__desc { padding-right: 56px; }
+.services-list__item--empty::before {
+  content: none;
 }
 
 /* ---------- Therapy: editorial timeline ---------- */

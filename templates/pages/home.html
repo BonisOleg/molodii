@@ -92,16 +92,11 @@
       <p class="page-article__lead">{% t services "intro" %}</p>
     </div>
 
-    <ul class="topics">
+    <ul class="services-list">
       {% for item in items %}
-        <li class="topics__item" data-reveal data-reveal-group>
-          <span class="topics__num">{{ forloop.counter|stringformat:"02d" }}</span>
-          <h3 class="topics__title">{% t item "title" %}</h3>
-          {% t item "description" as desc %}
-          {% if desc %}<p class="topics__desc">{{ desc }}</p>{% endif %}
-        </li>
+        <li class="services-list__item" data-reveal data-reveal-group>{% t item "title" %}</li>
       {% empty %}
-        <li class="topics__item topics__item--empty">
+        <li class="services-list__item services-list__item--empty">
           {% t ui_labels "services_empty" %}
         </li>
       {% endfor %}

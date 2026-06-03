@@ -14,6 +14,15 @@ from apps.pages.about_content import (
     approach_has_raw_url,
     education_has_raw_url,
 )
+from apps.pages.services_content import (
+    SERVICE_ITEMS_IT,
+    SERVICE_ITEMS_UK,
+    SERVICES_INTRO_IT,
+    SERVICES_INTRO_UK,
+    SERVICES_OUTRO_IT,
+    SERVICES_OUTRO_UK,
+    services_items_are_stale,
+)
 from apps.pages.models import (
     AboutPage,
     HomePage,
@@ -124,36 +133,38 @@ class Command(BaseCommand):
         s = ServicesPage.load()
         s.title_uk = s.title_uk or "З чим я працюю"
         s.title_it = s.title_it or "Con cosa lavoro"
-        s.intro_uk = s.intro_uk or "Ви можете звернутися до мене, якщо відчуваєте:"
-        s.intro_it = s.intro_it or "Puoi rivolgerti a me se provi:"
-        s.outro_uk = s.outro_uk or (
-            "Не потрібно бути в критичному стані, щоб звернутися до мене. "
-            "Іноді достатньо відчути, що звичні способи більше не працюють, і дати собі час і простір, "
-            "щоб поступово знайти нові.\n\n"
-            "Напишіть мені, щоб дізнатися вартість зустрічей."
-        )
-        s.outro_it = s.outro_it or (
-            "Non è necessario trovarsi in una condizione critica per contattarmi. "
-            "A volte basta accorgersi che le abituali strategie non funzionano più e concedersi tempo e spazio "
-            "per trovarne di nuove, gradualmente.\n\n"
-            "Scrivimi per conoscere le tariffe degli incontri."
-        )
+        s.intro_uk = s.intro_uk or SERVICES_INTRO_UK
+        s.intro_it = s.intro_it or SERVICES_INTRO_IT
+        s.outro_uk = s.outro_uk or SERVICES_OUTRO_UK
+        s.outro_it = s.outro_it or SERVICES_OUTRO_IT
         s.save()
 
-        if not s.items.exists():
-            items = [
-                ("Тривога і панічні атаки", "Ansia e attacchi di panico", "Як повернути контакт із собою, коли тіло «вмикає» тривогу.", "Come ritrovare il contatto con sé quando il corpo 'accende' l'ansia."),
-                ("Стосунки і розставання", "Relazioni e separazioni", "Конфлікти, межі, втрата близькості, рішення «залишитись чи піти».", "Conflitti, confini, perdita di intimità, decisione 'restare o andare'."),
-                ("Втрата і горе", "Perdita e lutto", "Простір прожити втрату — близької людини, дому, попереднього життя.", "Uno spazio per attraversare la perdita — di una persona cara, di una casa, della vita precedente."),
-                ("Самооцінка і самокритика", "Autostima e autocritica", "Чому «я недостатньо хороший» — і як з цим вчитися інакше.", "Perché 'non sono abbastanza' — e come imparare diversamente."),
-                ("Вигорання і втома", "Burnout e stanchezza", "Коли робота й піклування витискають усе. Робота з ресурсом.", "Quando lavoro e cura prosciugano tutto. Lavoro sulla risorsa."),
-                ("Адаптація після переїзду", "Adattamento dopo la migrazione", "Ідентичність, мова, самотність, «ні там, ні тут».", "Identità, lingua, solitudine, 'né qui né là'."),
-            ]
-            for i, (tu, ti, du, di) in enumerate(items):
+        if services_items_are_stale(s.items.all()):
+            s.intro_uk = SERVICES_INTRO_UK
+            s.intro_it = SERVICES_INTRO_IT
+            s.outro_uk = SERVICES_OUTRO_UK
+            s.outro_it = SERVICES_OUTRO_IT
+            s.save(update_fields=["intro_uk", "intro_it", "outro_uk", "outro_it"])
+
+            s.items.all().delete()
+            for i, (title_uk, title_it) in enumerate(zip(SERVICE_ITEMS_UK, SERVICE_ITEMS_IT)):
                 ServiceItem.objects.create(
-                    page=s, order=i,
-                    title_uk=tu, title_it=ti,
-                    description_uk=du, description_it=di,
+                    page=s,
+                    order=i,
+                    title_uk=title_uk,
+                    title_it=title_it,
+                    description_uk="",
+                    description_it="",
+                )
+        elif not s.items.exists():
+            for i, (title_uk, title_it) in enumerate(zip(SERVICE_ITEMS_UK, SERVICE_ITEMS_IT)):
+                ServiceItem.objects.create(
+                    page=s,
+                    order=i,
+                    title_uk=title_uk,
+                    title_it=title_it,
+                    description_uk="",
+                    description_it="",
                 )
 
     def _seed_therapy(self) -> None:
