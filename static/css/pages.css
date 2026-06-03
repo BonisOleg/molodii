@@ -462,6 +462,14 @@
   border-color: var(--clay);
 }
 
+.therapy-formats--steps .therapy-formats__media {
+  border-radius: var(--radius-xl);
+}
+
+.therapy-formats--steps .format-card {
+  border-radius: var(--radius-xl);
+}
+
 .therapy-formats--steps .therapy-formats__formats {
   display: flex;
   flex-direction: column;
@@ -490,8 +498,8 @@
 
 @media (min-width: 960px) {
   .therapy-formats--steps {
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
-    column-gap: 48px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(32px, 4vw, 64px);
     row-gap: 28px;
     align-items: start;
   }
@@ -504,7 +512,7 @@
   .therapy-formats--steps .therapy-formats__formats {
     grid-column: 2;
     grid-row: 1;
-    align-self: start;
+    align-self: center;
   }
 
   .therapy-formats--steps .steps--inline {
