@@ -492,26 +492,23 @@
   .therapy-formats--steps .steps--inline {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: subgrid;
     row-gap: 28px;
   }
 
   .therapy-formats--steps .steps__item {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: subgrid;
+    grid-template-columns: minmax(72px, max-content) minmax(0, 1fr);
+    column-gap: 24px;
     align-items: center;
-    gap: 28px;
     padding: 0;
   }
 
   .therapy-formats--steps .steps__num {
-    grid-column: 1;
     justify-self: start;
   }
 
   .therapy-formats--steps .steps__body {
-    grid-column: 2;
     padding-top: 0;
   }
 }
