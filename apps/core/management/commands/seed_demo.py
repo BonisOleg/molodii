@@ -1,13 +1,10 @@
 """Populate the database with starter content for local development."""
 from __future__ import annotations
 
-from pathlib import Path
-
-from django.conf import settings
-from django.core.files import File
 from django.core.management.base import BaseCommand
 
 from apps.contacts.models import ContactsPage, Office, SocialLink
+from apps.core.images import media_is_served
 from apps.core.models import SiteSettings
 from apps.pages.models import (
     AboutPage,
@@ -19,14 +16,10 @@ from apps.pages.models import (
 )
 
 
-SEED_DIR = settings.BASE_DIR / "static" / "img" / "seed"
-
-
-def _attach(field, file_path: Path, name: str) -> None:
-    if not file_path.exists() or field:
-        return
-    with file_path.open("rb") as fh:
-        field.save(name, File(fh), save=False)
+def _clear_uploaded_image(field) -> None:
+    """Drop DB media paths on PaaS: files are not served, static/img/seed is used instead."""
+    if field:
+        field.delete(save=False)
 
 
 class Command(BaseCommand):
@@ -72,8 +65,9 @@ class Command(BaseCommand):
             "«Il vero viaggio di scoperta non consiste nel cercare nuove terre, "
             "ma nell'avere nuovi occhi.» — Marcel Proust"
         )
-        _attach(p.hero_image, SEED_DIR / "hero.png", "hero.png")
-        _attach(p.about_image, SEED_DIR / "about.png", "about.png")
+        if not media_is_served():
+            _clear_uploaded_image(p.hero_image)
+            _clear_uploaded_image(p.about_image)
         p.save()
 
     def _seed_about(self) -> None:
@@ -132,7 +126,8 @@ class Command(BaseCommand):
             "Utilizzo anche mindfulness e il lavoro sul corpo — per tornare a sé, percepire meglio il proprio stato "
             "e gradualmente ritrovare un sostegno interno, anche dopo periodi difficili."
         )
-        _attach(a.photo, SEED_DIR / "about.png", "about.png")
+        if not media_is_served():
+            _clear_uploaded_image(a.photo)
         a.save()
 
     def _seed_services(self) -> None:
@@ -206,7 +201,8 @@ class Command(BaseCommand):
         t.pricing_note_it = t.pricing_note_it or (
             "La sessione dura 50 minuti. Frequenza — settimanale. Tariffe e dettagli li discutiamo alla conoscenza."
         )
-        _attach(t.image, SEED_DIR / "therapy.png", "therapy.png")
+        if not media_is_served():
+            _clear_uploaded_image(t.image)
         t.save()
 
         if not t.steps.exists():

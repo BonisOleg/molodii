@@ -136,3 +136,15 @@ def test_contact_form_falls_back_to_public_email(client: Client):
 
     assert len(mail.outbox) == 1
     assert mail.outbox[0].to == ["public@example.com"]
+
+
+@override_settings(DEBUG=False)
+def test_home_uses_static_images_when_media_not_served(client: Client):
+    home = HomePage.load()
+    home.hero_title_uk = "Заголовок"
+    home.hero_image.name = "home/hero.png"
+    home.save(update_fields=["hero_title_uk", "hero_image"])
+
+    html = client.get("/").content.decode("utf-8")
+    assert "/static/img/seed/hero" in html
+    assert "/media/home/hero.png" not in html

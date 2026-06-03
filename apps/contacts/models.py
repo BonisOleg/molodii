@@ -52,6 +52,7 @@ class Office(models.Model):
     @property
     def gallery_image_urls(self) -> list[str]:
         """Bundled static photos for known offices; optional admin upload for others."""
+        from apps.core.images import media_is_served
         from django.templatetags.static import static
 
         if "Monti" in self.address_uk:
@@ -66,22 +67,23 @@ class Office(models.Model):
             if prefetched is not None
             else self.photos.order_by("order", "pk")
         )
-        for photo in photos:
-            if not photo.image:
-                continue
-            try:
-                if photo.image.storage.exists(photo.image.name):
-                    urls.append(photo.image.url)
-            except (ValueError, OSError):
-                continue
-        if urls:
-            return urls
-        if self.photo:
-            try:
-                if self.photo.storage.exists(self.photo.name):
-                    return [self.photo.url]
-            except (ValueError, OSError):
-                pass
+        if media_is_served():
+            for photo in photos:
+                if not photo.image:
+                    continue
+                try:
+                    if photo.image.storage.exists(photo.image.name):
+                        urls.append(photo.image.url)
+                except (ValueError, OSError):
+                    continue
+            if urls:
+                return urls
+            if self.photo:
+                try:
+                    if self.photo.storage.exists(self.photo.name):
+                        return [self.photo.url]
+                except (ValueError, OSError):
+                    pass
         return []
 
 
