@@ -136,38 +136,8 @@
     {% t therapy "format_online" as fmt_online %}
     {% t therapy "format_offline" as fmt_offline %}
     <div class="therapy-formats therapy-formats--steps">
-      {% if therapy.image_url %}
-      <div class="therapy-formats__media" data-reveal>
-        <img
-          class="therapy-formats__image"
-          src="{{ therapy.image_url }}"
-          alt="{% t ui_labels 'therapy_eyebrow' %}"
-          width="600"
-          loading="lazy"
-          decoding="async"
-        >
-      </div>
-      {% endif %}
-      <div class="therapy-formats__copy">
-        {% include "partials/therapy_step_list.html" %}
-      </div>
+      {% include "partials/therapy_step_list.html" with image_url=therapy.image_url fmt_online=fmt_online fmt_offline=fmt_offline %}
     </div>
-    {% if fmt_online or fmt_offline %}
-    <div class="therapy-formats therapy-formats--cards">
-      <div class="therapy-formats__copy">
-        {% if fmt_online %}
-        <div class="format-card" data-reveal>
-          <div class="prose">{{ fmt_online|linebreaks }}</div>
-        </div>
-        {% endif %}
-        {% if fmt_offline %}
-        <div class="format-card" data-reveal>
-          <div class="prose">{{ fmt_offline|linebreaks }}</div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    {% endif %}
   </div>
 
   <div class="container">

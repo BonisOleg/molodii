@@ -1,17 +1,51 @@
 {% load i18n_fields %}
-<ol class="steps steps--inline">
-  {% for step in steps %}
-    <li class="steps__item" data-reveal data-reveal-group>
-      <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
-      <div class="steps__body">
-        {% t step "body" as sbody %}
-        {% if sbody %}
-          <h4 class="steps__title">{% t step "title" %}</h4>
-          <p class="steps__text">{{ sbody|linebreaks }}</p>
-        {% else %}
-          <p class="steps__text steps__text--solo">{% t step "title" %}</p>
-        {% endif %}
-      </div>
-    </li>
-  {% endfor %}
-</ol>
+<div class="therapy-formats__aside">
+  {% if image_url %}
+  <div class="therapy-formats__media" data-reveal>
+    <img
+      class="therapy-formats__image"
+      src="{{ image_url }}"
+      alt="{% t ui_labels 'therapy_eyebrow' %}"
+      width="600"
+      loading="lazy"
+      decoding="async"
+    >
+  </div>
+  {% endif %}
+  <div class="therapy-formats__nums" aria-hidden="true">
+    {% for step in steps %}
+      <span class="steps__num">{{ forloop.counter|stringformat:"02d" }}</span>
+    {% endfor %}
+  </div>
+</div>
+<div class="therapy-formats__side">
+  <div class="therapy-formats__panel" data-reveal>
+    <ol class="steps steps--panel">
+      {% for step in steps %}
+        <li class="steps__item" data-reveal data-reveal-group>
+          <div class="steps__body">
+            {% t step "body" as sbody %}
+            {% if sbody %}
+              <h4 class="steps__title">{% t step "title" %}</h4>
+              <p class="steps__text">{{ sbody|linebreaks }}</p>
+            {% else %}
+              <p class="steps__text steps__text--solo">{% t step "title" %}</p>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% if fmt_online or fmt_offline %}
+    {% if fmt_online %}
+    <div class="format-card" data-reveal>
+      <div class="prose">{{ fmt_online|linebreaks }}</div>
+    </div>
+    {% endif %}
+    {% if fmt_offline %}
+    <div class="format-card" data-reveal>
+      <div class="prose">{{ fmt_offline|linebreaks }}</div>
+    </div>
+    {% endif %}
+  {% endif %}
+</div>

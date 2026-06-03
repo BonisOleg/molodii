@@ -441,10 +441,22 @@
   margin-bottom: 0;
 }
 
-/* ---------- Therapy steps: photo above, circle + text rows below ---------- */
+/* ---------- Therapy steps: photo + nums left, white panel right ---------- */
 
 .therapy-formats--steps .steps::before {
   display: none;
+}
+
+.therapy-formats--steps .therapy-formats__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.therapy-formats--steps .therapy-formats__nums {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .therapy-formats--steps .steps__num {
@@ -460,52 +472,73 @@
   border-color: var(--clay);
 }
 
+.therapy-formats--steps .therapy-formats__side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.therapy-formats--steps .therapy-formats__panel {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: 28px 32px;
+}
+
+.therapy-formats--steps .steps--panel {
+  margin: 0;
+  padding: 0;
+}
+
+.therapy-formats--steps .steps--panel .steps__item {
+  display: block;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.therapy-formats--steps .steps--panel .steps__item:first-child {
+  padding-top: 0;
+}
+
+.therapy-formats--steps .steps--panel .steps__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.therapy-formats--steps .steps--panel .steps__body {
+  padding-top: 0;
+}
+
+@media (min-width: 768px) {
+  .therapy-formats--steps .steps__num {
+    width: 72px;
+    height: 72px;
+    font-size: 1.6rem;
+  }
+}
+
 @media (min-width: 960px) {
   .therapy-formats--steps {
     grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
-    grid-template-rows: auto auto;
     column-gap: 48px;
     row-gap: 32px;
     align-items: start;
   }
 
-  .therapy-formats--steps .therapy-formats__media {
+  .therapy-formats--steps .therapy-formats__aside {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .therapy-formats--steps .therapy-formats__copy {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: subgrid;
-  }
-
-  .therapy-formats--steps .steps--inline {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: subgrid;
-    row-gap: 28px;
-    margin: 0;
-  }
-
-  .therapy-formats--steps .steps__item {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: subgrid;
-    align-items: center;
-    gap: 28px;
-    padding: 0;
-  }
-
-  .therapy-formats--steps .steps__num {
-    grid-column: 1;
-    justify-self: start;
-  }
-
-  .therapy-formats--steps .steps__body {
+  .therapy-formats--steps .therapy-formats__side {
     grid-column: 2;
-    padding-top: 0;
+    grid-row: 1;
+    align-self: start;
+  }
+
+  .therapy-formats--steps .therapy-formats__panel {
+    padding: 36px 40px;
   }
 }
 
