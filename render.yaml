@@ -1,6 +1,8 @@
 # Render Blueprint — psycholog-site
 # Dashboard → Blueprints → New Blueprint Instance → підключити репозиторій → Apply.
 # Після деплою: Render Shell → python manage.py createsuperuser
+# Контент сторінок: seed_demo запускається в build.sh після migrate.
+# Якщо тексти порожні — вручну: python manage.py seed_demo
 # Секрети (email) задайте в Dashboard або при створенні Blueprint.
 
 databases:

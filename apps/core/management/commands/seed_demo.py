@@ -72,30 +72,6 @@ class Command(BaseCommand):
             "«Il vero viaggio di scoperta non consiste nel cercare nuove terre, "
             "ma nell'avere nuovi occhi.» — Marcel Proust"
         )
-        p.about_teaser_uk = p.about_teaser_uk or (
-            "Мій підхід поєднує професійну підготовку з досвідом адаптації в новій країні та міжкультурною практикою."
-        )
-        p.about_teaser_it = p.about_teaser_it or (
-            "Il mio approccio unisce formazione ed esperienza di adattamento in un nuovo paese e pratica interculturale."
-        )
-        p.services_intro_uk = p.services_intro_uk or (
-            "Тривога, складні стосунки, втрата, самооцінка, вигорання, адаптація після переїзду."
-        )
-        p.services_intro_it = p.services_intro_it or (
-            "Ansia, relazioni difficili, lutto, autostima, burnout, adattamento dopo la migrazione."
-        )
-        p.therapy_intro_uk = p.therapy_intro_uk or (
-            "Зустрічі онлайн або в кабінеті. Розмова без поспіху, прозорий контракт, спільне планування кроків."
-        )
-        p.therapy_intro_it = p.therapy_intro_it or (
-            "Incontri online o in studio. Una conversazione senza fretta, contratto trasparente, passi pianificati insieme."
-        )
-        p.contacts_teaser_uk = p.contacts_teaser_uk or (
-            "Напишіть кілька слів про те, з чим звертаєтеся — підберемо зручний час."
-        )
-        p.contacts_teaser_it = p.contacts_teaser_it or (
-            "Scrivimi qualche parola sulla tua richiesta — troveremo un orario comodo."
-        )
         _attach(p.hero_image, SEED_DIR / "hero.png", "hero.png")
         _attach(p.about_image, SEED_DIR / "about.png", "about.png")
         p.save()
