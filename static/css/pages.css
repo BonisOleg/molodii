@@ -444,7 +444,9 @@
 /* ---------- Therapy steps: photo + formats top row, circle+text rows below ---------- */
 
 .therapy-formats--steps .steps::before {
-  display: none;
+  left: 24px;
+  background: var(--clay);
+  opacity: 0.5;
 }
 
 .therapy-formats--steps .steps__num {
@@ -468,6 +470,22 @@
 
 .therapy-formats--steps .steps--inline {
   margin: 0;
+  padding-left: 0;
+}
+
+.therapy-formats--steps {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.therapy-section--pricing {
+  margin-top: clamp(24px, 4vw, 48px);
+  padding-top: clamp(32px, 5vw, 64px);
+}
+
+@media (min-width: 768px) {
+  .therapy-formats--steps .steps::before {
+    left: 36px;
+  }
 }
 
 @media (min-width: 960px) {
@@ -501,7 +519,7 @@
     grid-template-columns: minmax(72px, max-content) minmax(0, 1fr);
     column-gap: 24px;
     align-items: center;
-    padding: 0;
+    padding: 18px 0;
   }
 
   .therapy-formats--steps .steps__num {
