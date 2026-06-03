@@ -217,4 +217,40 @@
       start();
     });
   }
+
+  /* #region agent log */
+  const therapySteps = document.querySelector(".therapy-formats--steps");
+  if (therapySteps) {
+    const media = therapySteps.querySelector(".therapy-formats__media");
+    const formats = therapySteps.querySelector(".therapy-formats__formats");
+    const firstItem = therapySteps.querySelector(".steps__item");
+    const num = firstItem?.querySelector(".steps__num");
+    const body = firstItem?.querySelector(".steps__body");
+    const mr = media?.getBoundingClientRect();
+    const fr = formats?.getBoundingClientRect();
+    const nr = num?.getBoundingClientRect();
+    const br = body?.getBoundingClientRect();
+    fetch("http://127.0.0.1:7732/ingest/3cd41421-ddf6-4fea-b9d2-e116451fa660", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "a8e36a" },
+      body: JSON.stringify({
+        sessionId: "a8e36a",
+        runId: "post-fix",
+        hypothesisId: "VERIFY",
+        location: "main.js:therapy-layout",
+        message: "therapy section layout metrics",
+        timestamp: Date.now(),
+        data: {
+          hasPanel: Boolean(therapySteps.querySelector(".therapy-formats__panel")),
+          hasFormatsBlock: Boolean(formats),
+          numBodySameItem: Boolean(num && body && firstItem?.contains(num) && firstItem?.contains(body)),
+          formatsTopAlignedWithPhoto: mr && fr ? Math.abs(fr.top - mr.top) < 24 : null,
+          numBelowPhoto: mr && nr ? nr.top >= mr.bottom - 4 : null,
+          bodyRightOfNum: nr && br ? br.left >= nr.right - 4 : null,
+          viewportWidth: window.innerWidth,
+        },
+      }),
+    }).catch(() => {});
+  }
+  /* #endregion */
 })();
