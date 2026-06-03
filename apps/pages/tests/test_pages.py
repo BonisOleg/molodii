@@ -17,9 +17,10 @@ from apps.pages.about_content import (
     education_has_raw_url,
 )
 from apps.pages.models import (
-    AboutPage, HomePage, ServiceItem, ServicesPage, TherapyPage,
+    AboutPage, HomePage, ServiceItem, ServicesPage, TherapyPage, TherapyStep,
 )
 from apps.pages.services_content import SERVICE_ITEMS_UK, SERVICES_OUTRO_UK
+from apps.pages.therapy_content import THERAPY_STEPS
 from apps.contacts.models import ContactsPage
 
 
@@ -132,6 +133,22 @@ def test_services_page_renders_topics_list(client: Client):
     assert 'class="topics__line"' in html
     assert "Напишіть мені для того щоб дізнатись вартість зустрічей." in html
     assert 'class="services-list"' not in html
+
+
+def test_home_therapy_steps_render_screenshot_copy(client: Client):
+    therapy = TherapyPage.load()
+    therapy.steps.all().delete()
+    for order, data in enumerate(THERAPY_STEPS, start=1):
+        TherapyStep.objects.create(page=therapy, order=order, **data)
+
+    html = client.get("/").content.decode("utf-8")
+    assert "Призначаємо першу зустріч, де підписуємо інформовану згоду" in html
+    assert "На перших зустрічах окреслюємо запит і визначаємо цілі" in html
+    assert "Поступово формуємо процес, у якому рухаємось до змін" in html
+    assert "За потреби можливий формат разової консультації" in html
+    assert "рекомендації щодо подальшого звернення." in html
+    assert "Безкоштовна 20-хвилинна розмова" not in html
+    assert 'class="steps__text steps__text--solo"' in html
 
 
 def test_healthz(client: Client):

@@ -23,6 +23,14 @@ from apps.pages.services_content import (
     SERVICES_OUTRO_UK,
     services_items_are_stale,
 )
+from apps.pages.therapy_content import (
+    THERAPY_PRICING_NOTE_IT,
+    THERAPY_PRICING_NOTE_UK,
+    THERAPY_STEPS,
+    THERAPY_TITLE_IT,
+    THERAPY_TITLE_UK,
+    therapy_steps_are_stale,
+)
 from apps.pages.models import (
     AboutPage,
     HomePage,
@@ -169,8 +177,8 @@ class Command(BaseCommand):
 
     def _seed_therapy(self) -> None:
         t = TherapyPage.load()
-        t.title_uk = t.title_uk or "Як проходять зустрічі"
-        t.title_it = t.title_it or "Come procedono gli incontri"
+        t.title_uk = t.title_uk or THERAPY_TITLE_UK
+        t.title_it = t.title_it or THERAPY_TITLE_IT
         t.intro_uk = t.intro_uk or (
             "15-хвилинна безкоштовна розмова. "
             "На ній ми разом з’ясовуємо, з чим ви приходите, який напрямок роботи може бути доречним "
@@ -196,30 +204,16 @@ class Command(BaseCommand):
         t.format_offline_it = t.format_offline_it or (
             "Lo studio — uno spazio calmo, senza fretta. Indirizzi nella sezione contatti."
         )
-        t.pricing_note_uk = t.pricing_note_uk or (
-            "Сесія триває 50 хвилин. Регулярність — раз на тиждень. Вартість і деталі обговорюємо при знайомстві."
-        )
-        t.pricing_note_it = t.pricing_note_it or (
-            "La sessione dura 50 minuti. Frequenza — settimanale. Tariffe e dettagli li discutiamo alla conoscenza."
-        )
+        t.pricing_note_uk = t.pricing_note_uk or THERAPY_PRICING_NOTE_UK
+        t.pricing_note_it = t.pricing_note_it or THERAPY_PRICING_NOTE_IT
         if not media_is_served():
             _clear_uploaded_image(t.image)
         t.save()
 
-        if not t.steps.exists():
-            steps = [
-                ("Знайомство", "Conoscenza", "Безкоштовна 20-хвилинна розмова: ваш запит і моя робота.", "Una conversazione gratuita di 20 minuti: la tua richiesta e il mio lavoro."),
-                ("Контракт", "Contratto", "Узгоджуємо формат, регулярність, конфіденційність.", "Concordiamo formato, frequenza, riservatezza."),
-                ("Перші сесії", "Prime sessioni", "Збираємо контекст, формуємо спільне бачення цілей.", "Raccogliamo il contesto, costruiamo una visione condivisa degli obiettivi."),
-                ("Робота", "Lavoro", "Регулярні сесії — між ними буває домашня спостережлива практика.", "Sessioni regolari — tra una e l'altra, pratica osservativa."),
-                ("Завершення", "Chiusura", "Підсумовуємо, що змінилося, і як підтримувати ці зміни далі.", "Facciamo il punto su cosa è cambiato e come sostenere questi cambiamenti."),
-            ]
-            for i, (tu, ti, bu, bi) in enumerate(steps, start=1):
-                TherapyStep.objects.create(
-                    page=t, order=i,
-                    title_uk=tu, title_it=ti,
-                    body_uk=bu, body_it=bi,
-                )
+        if therapy_steps_are_stale(t.steps.all()):
+            TherapyStep.objects.filter(page=t).delete()
+            for order, data in enumerate(THERAPY_STEPS, start=1):
+                TherapyStep.objects.create(page=t, order=order, **data)
 
     def _seed_contacts(self) -> None:
         c = ContactsPage.load()

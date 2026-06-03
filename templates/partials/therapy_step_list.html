@@ -1,0 +1,17 @@
+{% load i18n_fields %}
+<ol class="steps steps--inline">
+  {% for step in steps %}
+    <li class="steps__item" data-reveal data-reveal-group>
+      <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+      <div class="steps__body">
+        {% t step "body" as sbody %}
+        {% if sbody %}
+          <h4 class="steps__title">{% t step "title" %}</h4>
+          <p class="steps__text">{{ sbody|linebreaks }}</p>
+        {% else %}
+          <p class="steps__text steps__text--solo">{% t step "title" %}</p>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ol>

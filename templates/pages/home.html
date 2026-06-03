@@ -135,7 +135,6 @@
     </div>
     {% t therapy "format_online" as fmt_online %}
     {% t therapy "format_offline" as fmt_offline %}
-    {% if fmt_online or fmt_offline %}
     <div class="therapy-formats">
       {% if therapy.image_url %}
       <div class="therapy-formats__media" data-reveal>
@@ -150,6 +149,12 @@
       </div>
       {% endif %}
       <div class="therapy-formats__copy">
+        {% include "partials/therapy_step_list.html" %}
+      </div>
+    </div>
+    {% if fmt_online or fmt_offline %}
+    <div class="therapy-formats therapy-formats--cards">
+      <div class="therapy-formats__copy">
         {% if fmt_online %}
         <div class="format-card" data-reveal>
           <div class="prose">{{ fmt_online|linebreaks }}</div>
@@ -163,34 +168,6 @@
       </div>
     </div>
     {% endif %}
-    <div class="therapy-formats">
-      {% if not fmt_online and not fmt_offline and therapy.image_url %}
-      <div class="therapy-formats__media" data-reveal>
-        <img
-          class="therapy-formats__image"
-          src="{{ therapy.image_url }}"
-          alt="{% t ui_labels 'therapy_eyebrow' %}"
-          width="600"
-          loading="lazy"
-          decoding="async"
-        >
-      </div>
-      {% endif %}
-      <div class="therapy-formats__copy">
-        <ol class="steps steps--inline">
-          {% for step in steps %}
-            <li class="steps__item" data-reveal data-reveal-group>
-              <span class="steps__num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
-              <div class="steps__body">
-                <h4 class="steps__title">{% t step "title" %}</h4>
-                {% t step "body" as sbody %}
-                {% if sbody %}<p class="steps__text">{{ sbody|linebreaks }}</p>{% endif %}
-              </div>
-            </li>
-          {% endfor %}
-        </ol>
-      </div>
-    </div>
   </div>
 
   <div class="container">
