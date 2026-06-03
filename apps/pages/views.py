@@ -26,6 +26,34 @@ def home(request):
         form = ContactForm(request.POST, lang=lang)
         if form.is_valid():
             handle_contact_submission(form.cleaned_data, request)
+            # #region agent log
+            import json
+            import time
+
+            try:
+                with open(
+                    "/Users/olegbonislavskyi/Sites/Психолог /.cursor/debug-d9fc80.log",
+                    "a",
+                    encoding="utf-8",
+                ) as log_file:
+                    log_file.write(
+                        json.dumps(
+                            {
+                                "sessionId": "d9fc80",
+                                "timestamp": int(time.time() * 1000),
+                                "location": "pages/views.py:home",
+                                "message": "redirect after valid post",
+                                "data": {"path": request.path},
+                                "hypothesisId": "E",
+                                "runId": "pre-fix",
+                            },
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
+            except OSError:
+                pass
+            # #endregion
             return redirect(request.path + "?submitted=1#contacts")
     else:
         form = ContactForm(lang=lang)
@@ -75,6 +103,34 @@ def contacts(request):
         form = ContactForm(request.POST, lang=lang)
         if form.is_valid():
             handle_contact_submission(form.cleaned_data, request)
+            # #region agent log
+            import json
+            import time
+
+            try:
+                with open(
+                    "/Users/olegbonislavskyi/Sites/Психолог /.cursor/debug-d9fc80.log",
+                    "a",
+                    encoding="utf-8",
+                ) as log_file:
+                    log_file.write(
+                        json.dumps(
+                            {
+                                "sessionId": "d9fc80",
+                                "timestamp": int(time.time() * 1000),
+                                "location": "pages/views.py:contacts",
+                                "message": "redirect after valid post",
+                                "data": {"path": request.path},
+                                "hypothesisId": "E",
+                                "runId": "pre-fix",
+                            },
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
+            except OSError:
+                pass
+            # #endregion
             return redirect(request.path + "?submitted=1")
     else:
         form = ContactForm(lang=lang)
