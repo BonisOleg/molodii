@@ -6,6 +6,14 @@ from django.core.management.base import BaseCommand
 from apps.contacts.models import ContactsPage, Office, SocialLink
 from apps.core.images import media_is_served
 from apps.core.models import SiteSettings
+from apps.pages.about_content import (
+    APPROACH_IT,
+    APPROACH_UK,
+    EDUCATION_IT,
+    EDUCATION_UK,
+    approach_has_raw_url,
+    education_has_raw_url,
+)
 from apps.pages.models import (
     AboutPage,
     HomePage,
@@ -96,36 +104,18 @@ class Command(BaseCommand):
             "• pazienti oncologici e le loro famiglie\n"
             "• coppie con diverso contesto culturale e nazionale"
         )
-        a.education_uk = a.education_uk or (
-            "Вища освіта в Україні та Італії. Зареєстрована в Ордені психологів Ломбардії. "
-            "https://www.opl.it/psicologi/28919/Molodii-Tetiana"
-        )
-        a.education_it = a.education_it or (
-            "Laurea in Ucraina e in Italia. Iscritta all'Ordine degli Psicologi della Lombardia. "
-            "https://www.opl.it/psicologi/28919/Molodii-Tetiana"
-        )
-        a.approach_uk = a.approach_uk or (
-            "Я працюю відповідно до етичного кодексу італійських психологів "
-            "https://www.psy.it/la-professione-psicologica/codice-deontologico-degli-psicologi-italiani/"
-            "codice-deontologico-vigente/ "
-            "який гарантує конфіденційність, повагу до людини та її контексту, "
-            "а також відповідальність за межі власної компетенції й постійний професійний розвиток.\n\n"
-            "Я працюю в когнітивно-конструктивістському підході, що зосереджується на тому, як людина формує "
-            "своє бачення реальності та які значення надає власному досвіду.\n\n"
-            "У роботі я також використовую майндфулнес і роботу з тілом — як спосіб повернутися до себе, "
-            "краще відчути свій стан і поступово відновити внутрішню опору, навіть після складних "
-            "життєвих періодів."
-        )
-        a.approach_it = a.approach_it or (
-            "Mi attengo al codice deontologico degli psicologi italiani "
-            "(https://www.psy.it/la-professione-psicologica/codice-deontologico-degli-psicologi-italiani/"
-            "codice-deontologico-vigente/), che garantisce riservatezza, rispetto della persona e del suo contesto, "
-            "responsabilità sui limiti di competenza e aggiornamento professionale continuo.\n\n"
-            "Lavoro nell'approccio cognitivo-costruttivista, con attenzione a come la persona costruisce la realtà "
-            "e attribuisce significato alla propria esperienza.\n\n"
-            "Utilizzo anche mindfulness e il lavoro sul corpo — per tornare a sé, percepire meglio il proprio stato "
-            "e gradualmente ritrovare un sostegno interno, anche dopo periodi difficili."
-        )
+        a.education_uk = a.education_uk or EDUCATION_UK
+        a.education_it = a.education_it or EDUCATION_IT
+        a.approach_uk = a.approach_uk or APPROACH_UK
+        a.approach_it = a.approach_it or APPROACH_IT
+        if education_has_raw_url(a.education_uk):
+            a.education_uk = EDUCATION_UK
+        if education_has_raw_url(a.education_it):
+            a.education_it = EDUCATION_IT
+        if approach_has_raw_url(a.approach_uk):
+            a.approach_uk = APPROACH_UK
+        if approach_has_raw_url(a.approach_it):
+            a.approach_it = APPROACH_IT
         if not media_is_served():
             _clear_uploaded_image(a.photo)
         a.save()

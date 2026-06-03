@@ -7,6 +7,15 @@ from django.core import mail
 from django.template import Context, Template
 
 from apps.core.models import SiteSettings
+from apps.core.templatetags.i18n_fields import md_links
+from apps.pages.about_content import (
+    APPROACH_UK,
+    EDUCATION_UK,
+    OPL_URL,
+    PSY_URL,
+    approach_has_raw_url,
+    education_has_raw_url,
+)
 from apps.pages.models import (
     AboutPage, HomePage, ServicesPage, TherapyPage,
 )
@@ -60,6 +69,33 @@ def test_t_tag_falls_back_to_uk():
     page.save()
     tpl = Template("{% load i18n_fields %}{% t page 'hero_title' %}")
     assert tpl.render(Context({"page": page, "LANG": "it"})) == "UA"
+
+
+def test_md_links_renders_inline_anchor():
+    result = str(md_links(f"Текст [орден]({OPL_URL}) далі."))
+    assert f'<a href="{OPL_URL}"' in result
+    assert "орден</a>" in result
+    assert OPL_URL not in result.replace(f'href="{OPL_URL}"', "")
+
+
+def test_about_raw_url_helpers():
+    assert not education_has_raw_url(EDUCATION_UK)
+    assert education_has_raw_url(f"Освіта. {OPL_URL}")
+    assert not approach_has_raw_url(APPROACH_UK)
+    assert approach_has_raw_url(f"Кодекс {PSY_URL} далі.")
+
+
+def test_home_about_cards_render_inline_links(client: Client):
+    about = AboutPage.load()
+    about.education_uk = EDUCATION_UK
+    about.approach_uk = APPROACH_UK
+    about.save(update_fields=["education_uk", "approach_uk"])
+
+    html = client.get("/").content.decode("utf-8")
+    assert f'<a href="{OPL_URL}"' in html
+    assert f'<a href="{PSY_URL}"' in html
+    assert "Зареєстрована в ордені психологів Ломбардії" in html
+    assert "етичного кодексу італійських психологів" in html
 
 
 def test_bundled_static_images_on_home(client: Client):
