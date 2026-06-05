@@ -27,7 +27,7 @@
   overflow: hidden;
   border-bottom: 1px solid var(--text);
   font-size: 0.84rem;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
 }
 
@@ -122,10 +122,9 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-body);
   font-size: 0.92rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--tracking-body);
   flex-shrink: 0;
   white-space: nowrap;
 }
@@ -220,8 +219,8 @@
   gap: 14px;
   width: 100%;
   padding: 16px 0;
-  font-size: 1.4rem;
-  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
   color: var(--text);
   position: relative;
   transition: color var(--dur-1) var(--ease), padding-left var(--dur-2) var(--ease);
@@ -273,7 +272,7 @@
   .nav__link {
     padding: 6px 0;
     font-size: 0.95rem;
-    font-family: var(--font-body);
+    font-weight: 500;
     color: var(--muted);
     width: auto;
     white-space: nowrap;
@@ -296,8 +295,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-caps);
   color: var(--muted);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -358,8 +357,9 @@
 }
 
 .footer__brand {
-  font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
   margin-bottom: 6px;
 }
 
