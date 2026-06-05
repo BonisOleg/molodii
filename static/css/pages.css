@@ -988,7 +988,9 @@
 
 .section__outro {
   padding: 32px 0 0;
-  max-width: 640px;
+  max-width: none;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .section__outro p {

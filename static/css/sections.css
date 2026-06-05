@@ -297,10 +297,6 @@
   text-align: center;
 }
 
-@media (min-width: 960px) {
-  .section--cta-narrow { text-align: left; }
-}
-
 /* ---------- Decorative ornaments ---------- */
 
 .ornament {
