@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import json
 import logging
-import threading
 import time
 from typing import Any
 
@@ -84,6 +83,7 @@ def _send_contact_notification_email(data: dict, recipient: str) -> None:
             to=[recipient],
             reply_to=[data["email"]],
         ).send(fail_silently=False)
+        logger.info("Contact form email sent to %s", recipient)
         # #region agent log
         _agent_log(
             "contacts/utils.py:_send_contact_notification_email",
@@ -111,8 +111,7 @@ def handle_contact_submission(data: dict, request) -> None:
     """Save request to DB and send email notification.
 
     DB write always happens. Email failure is logged and swallowed so
-    the user always sees a success state. In production, email is sent
-    in a background thread so SMTP latency cannot block the HTTP response.
+    the user always sees a success state.
     """
     # #region agent log
     started = time.perf_counter()
@@ -152,23 +151,13 @@ def handle_contact_submission(data: dict, request) -> None:
         # #endregion
         return
 
-    if settings.DEBUG:
-        _send_contact_notification_email(data, recipient)
-    else:
-        threading.Thread(
-            target=_send_contact_notification_email,
-            args=(data, recipient),
-            daemon=True,
-        ).start()
+    _send_contact_notification_email(data, recipient)
 
     # #region agent log
     _agent_log(
         "contacts/utils.py:handle_contact_submission",
         "submission end",
-        {
-            "emailQueued": not settings.DEBUG,
-            "elapsedMs": int((time.perf_counter() - started) * 1000),
-        },
+        {"elapsedMs": int((time.perf_counter() - started) * 1000)},
         "E",
     )
     # #endregion

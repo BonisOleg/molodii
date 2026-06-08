@@ -72,8 +72,12 @@ class ResendEmailBackend(BaseEmailBackend):
         )
 
         try:
-            with urllib.request.urlopen(request, timeout=settings.EMAIL_TIMEOUT):
-                pass
+            with urllib.request.urlopen(request, timeout=settings.EMAIL_TIMEOUT) as response:
+                logger.info(
+                    "Resend API accepted email to %s (status %s)",
+                    message.to,
+                    response.status,
+                )
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise RuntimeError(f"Resend API error {exc.code}: {detail}") from exc
