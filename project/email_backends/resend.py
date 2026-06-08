@@ -67,6 +67,8 @@ class ResendEmailBackend(BaseEmailBackend):
             headers={
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
+                # Resend/Cloudflare відхиляють urllib без User-Agent (403, code 1010).
+                "User-Agent": "psycholog-site/1.0 (Django)",
             },
             method="POST",
         )
