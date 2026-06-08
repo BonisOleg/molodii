@@ -26,3 +26,11 @@ if _render_host and _render_host not in ALLOWED_HOSTS:
 _render_url = os.environ.get("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
 if _render_url and _render_url not in CSRF_TRUSTED_ORIGINS:
     CSRF_TRUSTED_ORIGINS = [*CSRF_TRUSTED_ORIGINS, _render_url]
+
+# Кастомний домен у ALLOWED_HOSTS, але без CSRF_TRUSTED_ORIGINS → 403 на POST-формах.
+for _host in ALLOWED_HOSTS:
+    if not _host or _host == "*" or _host.startswith("."):
+        continue
+    for _origin in (f"https://{_host}", f"http://{_host}"):
+        if _origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS = [*CSRF_TRUSTED_ORIGINS, _origin]

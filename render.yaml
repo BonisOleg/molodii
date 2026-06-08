@@ -37,11 +37,10 @@ services:
         fromDatabase:
           name: psycholog-db
           property: connectionString
-      # Власний домен (через кому), якщо є — додайте в Dashboard:
       - key: ALLOWED_HOSTS
-        sync: false
+        value: molodiitetiana.com,www.molodiitetiana.com
       - key: CSRF_TRUSTED_ORIGINS
-        sync: false
+        value: https://molodiitetiana.com,https://www.molodiitetiana.com
       - key: RESEND_API_KEY
         sync: false
       - key: DEFAULT_FROM_EMAIL
