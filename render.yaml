@@ -3,7 +3,7 @@
 # Суперюзер admin/admin створюється автоматично в build.sh (ensure_superuser).
 # Контент сторінок: seed_demo запускається в build.sh після migrate.
 # Якщо тексти порожні — вручну: python manage.py seed_demo
-# Секрети (email) задайте в Dashboard або при створенні Blueprint.
+# Секрети (RESEND_API_KEY, DEFAULT_FROM_EMAIL) задайте в Dashboard або при створенні Blueprint.
 
 databases:
   - name: psycholog-db
@@ -42,9 +42,7 @@ services:
         sync: false
       - key: CSRF_TRUSTED_ORIGINS
         sync: false
-      - key: EMAIL_HOST_USER
-        sync: false
-      - key: EMAIL_HOST_PASSWORD
+      - key: RESEND_API_KEY
         sync: false
       - key: DEFAULT_FROM_EMAIL
         sync: false

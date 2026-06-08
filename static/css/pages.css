@@ -413,7 +413,14 @@
 }
 
 .steps__body { padding-top: 6px; }
-.steps__title { font-size: 1.4rem; margin: 0 0 8px; }
+.steps__title {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.42;
+  color: var(--text);
+  margin: 0 0 8px;
+}
 .steps__text { color: var(--text-soft); margin: 0; max-width: 60ch; }
 .steps__text--solo {
   font-size: 1.2rem;
@@ -427,7 +434,7 @@
   .steps::before { left: 36px; }
   .steps__item { grid-template-columns: 96px 1fr; gap: 28px; padding: 28px 0; }
   .steps__num { width: 72px; height: 72px; font-size: 1.35rem; }
-  .steps__title { font-size: 1.6rem; }
+  .steps__title { font-size: 1.35rem; }
   .steps__text--solo { font-size: 1.35rem; }
 }
 

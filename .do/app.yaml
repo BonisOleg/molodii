@@ -1,6 +1,6 @@
 # DigitalOcean App Platform — psycholog-site
 # 1. Замініть github.repo на ваш репозиторій (org/name).
-# 2. Секрети (SECRET_KEY, email, Cloudinary) задайте в панелі DO або через doctl.
+# 2. Секрети (SECRET_KEY, RESEND_API_KEY, DEFAULT_FROM_EMAIL, Cloudinary) задайте в панелі DO або через doctl.
 # 3. Деплой: doctl apps create --spec .do/app.yaml
 #    або імпортуйте spec при створенні застосунку в Control Panel.
 
@@ -61,10 +61,7 @@ services:
       - key: CLOUDINARY_API_SECRET
         scope: RUN_TIME
         type: SECRET
-      - key: EMAIL_HOST_USER
-        scope: RUN_TIME
-        type: SECRET
-      - key: EMAIL_HOST_PASSWORD
+      - key: RESEND_API_KEY
         scope: RUN_TIME
         type: SECRET
       - key: DEFAULT_FROM_EMAIL

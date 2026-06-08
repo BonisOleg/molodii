@@ -248,13 +248,11 @@ STORAGES = {
     },
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# Resend HTTP API — Render free tier блокує outbound SMTP (порт 587).
+# DEFAULT_FROM_EMAIL має бути з верифікованого домену в Resend.
+EMAIL_BACKEND = "project.email_backends.resend.ResendEmailBackend"
 EMAIL_TIMEOUT = 10
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@example.com")
 CONTACT_RECIPIENT = os.environ.get("CONTACT_RECIPIENT", DEFAULT_FROM_EMAIL)
 
